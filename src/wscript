@@ -1,0 +1,49 @@
+def build(bld):
+    bld.stlib(
+        source = [
+            'Random.cpp',
+            'Ngram.cpp',
+            'Kaibun.cpp',
+            'HashTrie.cpp',
+            'Trie.cpp',
+            'Util.cpp',
+            'ArrayTrie.cpp',
+            'Dictionary.cpp',
+            'Unigram.cpp',
+            'ModelBuilder.cpp',
+            'ReadManager.cpp',
+            'ReadNormalizer.cpp',
+            'MecabReader.cpp',
+            ],
+        target = 'ppg',
+        name = 'libppg',
+        includes = '.',
+        use = 'PFICOMMON'
+        )
+
+    bld.program(
+        source = 'main.cpp',
+        target = 'ppg',
+        includes = '.',
+        use = 'libppg'
+        )
+
+    def make_test(source):
+        bld.program(
+            features = 'gtest',
+            source = source,
+        target = source[0:source.find('.')],
+        includes = '.',
+        use = 'libppg'
+        )
+
+    test_source = [
+            'RandomTest.cpp',
+            'NgramTest.cpp',
+            'HashTrieTest.cpp',
+            'ArrayTrieTest.cpp',
+            'ReadManagerTest.cpp',
+            'ReadNormalizerTest.cpp',
+            ]
+    for s in test_source:
+        make_test(s)

@@ -1,14 +1,15 @@
-#include "test.hpp"
+#include <gtest/gtest.h>
 #include <iostream>
 #include "kaibun.hpp"
 #include "ngram.hpp"
 #include "hashtrie.hpp"
 #include "util.hpp"
-#include "log.hpp"
 
-namespace kaibun {
+namespace ppg {
 
-TEST_CASE(trie) {
+using namespace std;
+
+TEST(trie, trivial) {
   Ngram forward;
   Ngram backward;
   HashTrie unigram;
@@ -23,8 +24,9 @@ TEST_CASE(trie) {
   backward.insert("AB", "", str_to_read(""));
   try_make(forward, backward, unigram, r);
   cout << "--" << endl;
-  FOREACH (i, r)
-    LOG(DEBUG, i->first);
+  FOREACH (i, r) {
+    cout << i->first << endl;
+  }
   cout << "--" << endl;
 }
 

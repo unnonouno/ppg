@@ -1,8 +1,8 @@
 #include <vector>
-#include "util.hpp"
+#include "Util.hpp"
 #include <sstream>
 
-namespace kaibun {
+namespace ppg {
 
 using namespace std;
 

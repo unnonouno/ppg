@@ -5,10 +5,10 @@
 #include <vector>
 #include "util.hpp"
 
-using namespace std;
+namespace ppg {
 
 template <typename K, typename V>
-ostream& operator << (ostream& out, const hashmap<K, V>& t) {
+std::ostream& operator << (std::ostream& out, const ppg::hashmap<K, V>& t) {
   out << "{";
   FOREACH (e, t) {
     if (e != t.begin())
@@ -20,10 +20,10 @@ ostream& operator << (ostream& out, const hashmap<K, V>& t) {
 }
 
 template <typename T>
-ostream& operator << (ostream& out, const vector<T>& t) {
+std::ostream& operator << (std::ostream& out, const std::vector<T>& t) {
   out << "[";
   FOREACH (i, t) {
-    if (i != t.first)
+    if (i != t.begin())
       out << ", ";
     out << *i;
   }
@@ -32,10 +32,11 @@ ostream& operator << (ostream& out, const vector<T>& t) {
 }
 
 template <typename T>
-void write_pointer(ostream& out, const T* t) {
+void write_pointer(std::ostream& out, const T* t) {
   if (t)
     out << *t;
   else
     out << "NULL";
 }
 
+}

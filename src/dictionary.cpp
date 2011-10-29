@@ -1,7 +1,8 @@
-#include "dictionary.hpp"
-#include "serializer.hpp"
+#include "Dictionary.hpp"
 
-namespace kaibun {
+namespace ppg {
+
+using namespace std;
 
 Dictionary Dictionary::instance;
 
@@ -19,16 +20,5 @@ const string&
 Dictionary::string_of_id(int id) const {
   return id_to_str[id];
 }
-
-void
-Dictionary::save(OutSerializer& out) const {
-  out << id_to_str << str_to_id << next_id;
-}
-
-void
-Dictionary::load(InSerializer& in) {
-  in >> id_to_str >> str_to_id >> next_id;
-}
-
 
 }

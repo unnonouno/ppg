@@ -1,20 +1,21 @@
-#include "hashtrie.hpp"
-#include "util.hpp"
+#include <elog/elog.h>
+#include "HashTrie.hpp"
+#include "Util.hpp"
 #include <iostream>
 #include <stdexcept>
 
-#include "log.hpp"
-#include "dictionary.hpp"
-#include "dumpstream.hpp"
+#include "Dictionary.hpp"
 
-namespace kaibun {
+namespace ppg {
+
+using namespace std;
 
 const string HashTrie::not_found = "not found";
 
 size_t
 HashTrie::count_total(const vector<char_t>& read, bool ignore_empty) const {
   size_t total = iter_count(root, read, 0, 0);
-  LOG(DEBUG, total);
+  LOG() << total;
   if (ignore_empty)
     total -= root.n_elements;
   return total;
@@ -104,7 +105,7 @@ HashTrie::Node::iter_insert(const read_t& read,
   } else {
     n_children += n;
     if (children.count(read[i]) == 0)
-      children[read[i]] = new Node();
+      children[read[i]] = pfi::lang::shared_ptr<Node>(new Node());
     children[read[i]]->iter_insert(read, i + 1, str, n);
   }
 }
@@ -137,49 +138,5 @@ HashTrie::Node::iter_print(ostream& out, size_t indent) const {
   }
 }
 
-void
-HashTrie::load_s_expression(istream& in) {
-  
-}
-
-void
-HashTrie::Node::save_s_exp(ostream& out) const {
-  out << '(' << n_elements << ' ' << n_children << ' ';
-  
-  out << ')';
-}
-
-void
-HashTrie::load(InSerializer& in) {
-  in >> root;
-}
-
-void
-HashTrie::save(OutSerializer& out) const {
-  out << root;
-}
-
-void
-HashTrie::Node::load(InSerializer& in) {
-  in >> n_elements >> n_children >> elements >> children;
-}
-
-void
-HashTrie::Node::save(OutSerializer& out) const {
-  out << n_elements << n_children << elements << children;
-}
-
-
-void
-HashTrie::write(DumpStream& out) const {
-  out << root;
-}
-
-void
-HashTrie::Node::write(DumpStream& out) const {
-  //  out << "# elem: " << n_elements << '\n';
-  //  out << "# child: " << n_children << '\n';
-  out << "{{elem: " << elements << ", " << "child: " << children << "}}";
-}
 
 }

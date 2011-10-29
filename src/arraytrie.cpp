@@ -1,16 +1,21 @@
 #include <iostream>
-#include "dumpstream.hpp"
-#include "arraytrie.hpp"
-#include "util.hpp"
-#include "log.hpp"
+#include <elog/elog.h>
+#include "ArrayTrie.hpp"
+#include "Util.hpp"
 
-namespace kaibun {
+using namespace std;
+
+namespace ppg {
 
 bool
-ArrayTrie::get_ith(const read_t& read, size_t i, string& r_word, read_t& r_read, bool ignore_empty) const {
+ArrayTrie::get_ith(const read_t& read, 
+                   size_t i,
+                   string& r_word,
+                   read_t& r_read,
+                   bool ignore_empty) const {
   read_t r;
   FOREACH (c, read) {
-    unsigned pos = get_begin(r);
+    size_t pos = get_begin(r);
     if (pos < data.size() &&
         !(c == read.begin() && ignore_empty) && data[pos].read == r) {
       if (i < get_count(pos)) {
@@ -24,23 +29,23 @@ ArrayTrie::get_ith(const read_t& read, size_t i, string& r_word, read_t& r_read,
     r.push_back(*c);
   }
 
-  pair<unsigned, unsigned> range = get_range(read);
+  pair<size_t, size_t> range = get_range(read);
   if (ignore_empty && read.empty()
       && range.first < data.size() && data[range.first].read.empty()) {
     range.first++;
   }
-  unsigned begin = range.first;
-  unsigned end = range.second;
+  size_t begin = range.first;
+  size_t end = range.second;
   unsigned offset = get_offset(begin);
   unsigned goal = offset + i;
-  LOG(DEBUG, "(" << begin << ", " << end << ")");
-  LOG(DEBUG, "off(" << get_offset(begin) << ", " << get_offset(end) << ")");
+  LOG() << "(" << begin << ", " << end << ")";
+  LOG() << "off(" << get_offset(begin) << ", " << get_offset(end) << ")";
   
   if (!(goal < get_offset(end)))
     return false;
 
   while (end - begin > 1) {
-    unsigned index = (begin + end) / 2;
+    size_t index = (begin + end) / 2;
     if (get_offset(index) <= goal)
       begin = index;
     else
@@ -53,7 +58,7 @@ ArrayTrie::get_ith(const read_t& read, size_t i, string& r_word, read_t& r_read,
 
 void
 ArrayTrie::insert(const read_t& read, const string& str, unsigned n) {
-  unsigned pos = get_begin(read);
+  size_t pos = get_begin(read);
   if (pos >= data.size() || data[pos].str != str) {
     Node node;
     node.read = read;
@@ -61,14 +66,14 @@ ArrayTrie::insert(const read_t& read, const string& str, unsigned n) {
     node.count = get_offset(pos);
     data.insert(data.begin() + pos, node);
   }
-  for (unsigned i = pos; i < data.size(); i++)
+  for (size_t i = pos; i < data.size(); i++)
     data[i].count += n;
 }
 
 void
 ArrayTrie::print(ostream& out) const {
   unsigned last = 0;
-  for (unsigned i = 0; i < data.size(); i++) {
+  for (size_t i = 0; i < data.size(); i++) {
     out << data[i].str << ": " << (data[i].count - last) << endl;
     last = data[i].count;
   }
@@ -80,7 +85,7 @@ ArrayTrie::count_total(const read_t& read, bool ignore_empty) const {
   read_t r;
   //LOG(ERROR, "hist: " << read_to_str(read));
   FOREACH (c, read) {
-    unsigned pos = get_begin(r);
+    size_t pos = get_begin(r);
     if (pos < data.size() &&
         !(c == read.begin() && ignore_empty) &&
         data[pos].read == r) {
@@ -89,7 +94,7 @@ ArrayTrie::count_total(const read_t& read, bool ignore_empty) const {
     r.push_back(*c);
   }
 
-  pair<unsigned, unsigned> range = get_range(read);
+  pair<size_t, size_t> range = get_range(read);
   if (ignore_empty && read.empty()
       && range.first < data.size() && data[range.first].read.empty()) {
     range.first++;
@@ -99,7 +104,7 @@ ArrayTrie::count_total(const read_t& read, bool ignore_empty) const {
 }
 
 unsigned
-ArrayTrie::get_count(unsigned pos) const {
+ArrayTrie::get_count(size_t pos) const {
   if (data.empty()) return 0;
   else if (pos == 0) return data[pos].count;
   else return data[pos].count - data[pos - 1].count;
@@ -118,11 +123,11 @@ static read_t next_read(const read_t& read) {
   return r;
 }
 
-pair<unsigned, unsigned>
+pair<size_t, size_t>
 ArrayTrie::get_range(const read_t& read) const {
-  unsigned begin = get_begin(read);
+  size_t begin = get_begin(read);
   read_t end_read = next_read(read);
-  unsigned end;
+  size_t end;
   if (end_read.size() == 0)
     end = data.size();
   else
@@ -130,11 +135,11 @@ ArrayTrie::get_range(const read_t& read) const {
   return make_pair(begin, end);
 }
 
-unsigned
+size_t
 ArrayTrie::get_begin(const read_t& read) const {
-  unsigned begin = 0, end = data.size();
+  size_t begin = 0, end = data.size();
   while (end - begin > 0) {
-    unsigned index = (begin + end) / 2;
+    size_t index = (begin + end) / 2;
     if (data[index].read < read) {
       begin = index + 1;
     } else {
@@ -145,41 +150,11 @@ ArrayTrie::get_begin(const read_t& read) const {
 }
 
 unsigned
-ArrayTrie::get_offset(unsigned index) const {
+ArrayTrie::get_offset(size_t index) const {
   if (index == 0)
     return 0;
   else
     return data[index - 1].count;
-}
-
-void
-ArrayTrie::load(InSerializer& in) {
-  in >> data;
-}
-
-void
-ArrayTrie::save(OutSerializer& out) const {
-  out << data;
-}
-
-void
-ArrayTrie::Node::load(InSerializer& in) {
-  in >> read >> str >> count;
-}
-
-void
-ArrayTrie::Node::save(OutSerializer& out) const {
-  out << read << str << count;
-}
-
-void
-ArrayTrie::write(DumpStream& out) const {
-  out << data;
-}
-
-void
-ArrayTrie::Node::write(DumpStream& out) const {
-  out << "{read: " << read << ", str: " << str << ", count: " << count << "}\n";
 }
 
 }

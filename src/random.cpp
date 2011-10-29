@@ -1,19 +1,17 @@
-#include "random.hpp"
-#include <ctime>
-#include <boost/random.hpp>
+#include "Random.hpp"
+#include <pficommon/math/random.h>
 
-namespace kaibun {
+namespace ppg {
 
 using namespace std;
-using namespace boost;
 
-mt19937 gen(static_cast<unsigned long>(time(0)));
+pfi::math::random::mtrand rand;
   
 void init_random() {
-  
 }
 
 int random_int(int m) {
-  return uniform_smallint<>(0, m-1)(gen);
+  return rand.next_int(m);
 }
+
 }

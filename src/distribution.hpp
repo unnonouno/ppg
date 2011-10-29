@@ -1,10 +1,10 @@
-namespace kaibun {
+#pragma once
 
-using namespace std;
+namespace ppg {
 
 class Distribution {
 public:
-  virtual const string& sample(const vector<char>& read) const = 0;
+  virtual const std::string& sample(const std::vector<char>& read) const = 0;
   
 private:
 };

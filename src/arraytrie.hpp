@@ -3,50 +3,60 @@
 #include "fwd.hpp"
 #include <string>
 #include <vector>
+#include <ostream>
+#include <pficommon/data/serialization.h>
 
-#include "trie.hpp"
+#include "Trie.hpp"
 
-#include "serializer.hpp"
-
-namespace kaibun {
-
-using namespace std;
+namespace ppg {
 
 class ArrayTrie : public Trie {
 public:
   virtual ~ArrayTrie() {}
 
-  bool get_ith(const read_t& read, size_t i, string& r_word, read_t& r_read,
+  bool get_ith(const read_t& read,
+               size_t i,
+               std::string& r_word,
+               read_t& r_read,
                bool ignore_empty = false) const;
-  void insert(const read_t& read, const string& str, unsigned n);
 
-  void print(ostream& out) const;
+  void insert(const read_t& read,
+              const std::string& str,
+              unsigned n);
 
-  size_t count_total(const read_t& read, bool ignore_empty = false) const;
+  void print(std::ostream& out) const;
 
-  void load(InSerializer&);
-  void save(OutSerializer&) const;
-
-  void write(DumpStream& out) const;
+  size_t count_total(const read_t& read,
+                     bool ignore_empty = false) const;
 
   struct Node {
     read_t read;
-    string str;
+    std::string str;
     unsigned count;
 
-    void load(InSerializer&);
-    void save(OutSerializer&) const;
-
-    void write(DumpStream&) const;
+    friend class pfi::data::serialization::access;
+    template <class A>
+    void serialize(A &a) {
+      a & read & str & count;
+    }
   };
 
 private:
-  pair<unsigned, unsigned> get_range(const read_t& read) const;
-  unsigned get_begin(const read_t& read) const;
-  unsigned get_count(unsigned pos) const;
-  unsigned get_offset(unsigned index) const;
+  friend class pfi::data::serialization::access;
+  template <class A>
+  void serialize(A &a) {
+    a & data;
+  }
 
-  vector<Node> data;
+  std::pair<size_t, size_t> get_range(const read_t& read) const;
+
+  size_t get_begin(const read_t& read) const;
+
+  unsigned get_count(size_t pos) const;
+
+  unsigned get_offset(size_t index) const;
+
+  std::vector<Node> data;
 };
 
 }
