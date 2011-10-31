@@ -26,12 +26,12 @@ TEST(trie, trivial) {
   backward.insert("ABAB", "", str_to_read(""));
 
   Model model;
-  model.swapUnigram(unigram);
-  model.swapForward(forward);
-  model.swapBackward(backward);
+  model.swap_unigram(unigram);
+  model.swap_forward(forward);
+  model.swap_backward(backward);
 
   Sentence s;
-  model.tryMake(s);
+  model.try_make(s);
   cout << "--" << endl;
   FOREACH (i, s.words) {
     cout << i->str << endl;

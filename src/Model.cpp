@@ -18,7 +18,7 @@ State opposite(State s) {
   return op[s];
 }
 
-bool isParindrome(const read_t& read,
+bool is_parindrome(const read_t& read,
                    const int l,
                    const int r) {
   for (int il = l, ir = r; il < ir; il++, ir--) {
@@ -28,7 +28,7 @@ bool isParindrome(const read_t& read,
   return true;
 }
 
-bool Model::sampleNext(bool go_right,
+bool Model::sample_next(bool go_right,
                         read_t& read,
                         vector<Word>& right,
                         vector<Word>& left,
@@ -73,7 +73,7 @@ bool Model::sampleNext(bool go_right,
   return true;
 }
 
-bool Model::sampleCenter(string& r_center,
+bool Model::sample_center(string& r_center,
                           read_t& r_read,
                           State& state,
                           read_t& rest) const {
@@ -84,7 +84,7 @@ bool Model::sampleCenter(string& r_center,
   vector<pair<State, read_t> > cands;
 
   for (int i = 0; i <= len; i++) {
-    if (!isParindrome(r_read, i, len - 1))
+    if (!is_parindrome(r_read, i, len - 1))
       continue;
     State s = RIGHT;
     read_t rst;
@@ -96,7 +96,7 @@ bool Model::sampleCenter(string& r_center,
   }
 
   for (int i = 1; i <= len; i++) {
-    if (!isParindrome(r_read, 0, len - i - 1))
+    if (!is_parindrome(r_read, 0, len - i - 1))
       continue;
 
     State s = LEFT;
@@ -109,13 +109,13 @@ bool Model::sampleCenter(string& r_center,
     return false;
   //FOREACH (c, cands)
   //LOG(DEBUG, c->first << " " << read_to_str(c->second));
-  unsigned id = randomInt(cands.size());
+  unsigned id = random_int(cands.size());
   state = cands[id].first;
   rest = cands[id].second;
   return true;
 }
 
-bool Model::tryMake(Sentence& ret) const {
+bool Model::try_make(Sentence& ret) const {
   vector<Word> right, left;
   State state = BALANCE;
   read_t read;
@@ -125,7 +125,7 @@ bool Model::tryMake(Sentence& ret) const {
   
   LOG() << "start";
   //unigram.sample(read_t(), center, read);
-  if (!sampleCenter(center, center_read, state, read))
+  if (!sample_center(center, center_read, state, read))
     return false;
 
   LOG() << "center: " << center << " " << state << " " << center_read;
@@ -142,11 +142,11 @@ bool Model::tryMake(Sentence& ret) const {
     //LOG(DEBUG, state << ' ' << read_to_str(read));
     switch (state) {
       case BALANCE: {
-        if (!sampleNext(true,
+        if (!sample_next(true,
                          read, right, left, state, depth < 10))
           return false;
         if (state == BALANCE) {
-          if (!sampleNext(false,
+          if (!sample_next(false,
                            read, right, left, state, depth < 10))
             return false;
           if (state == BALANCE) {
@@ -175,7 +175,7 @@ bool Model::tryMake(Sentence& ret) const {
           if (r == 0)
           return false;
         */
-        if (!sampleNext(state == RIGHT,
+        if (!sample_next(state == RIGHT,
                          read, right, left, state, true))
           return false;
         
@@ -191,14 +191,14 @@ bool Model::tryMake(Sentence& ret) const {
   }
 }
 
-void Model::swapUnigram(Unigram& unigram) {
+void Model::swap_unigram(Unigram& unigram) {
   Model::unigram.swap(unigram);
 }
 
-void Model::swapForward(Ngram& forward) {
+void Model::swap_forward(Ngram& forward) {
   Model::forward.swap(forward);
 }
-void Model::swapBackward(Ngram& backward) {
+void Model::swap_backward(Ngram& backward) {
   Model::backward.swap(backward);
 }
 

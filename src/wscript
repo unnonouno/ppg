@@ -3,7 +3,7 @@ def build(bld):
         source = [
             'Random.cpp',
             'Ngram.cpp',
-            'Kaibun.cpp',
+            'Model.cpp',
             'HashTrie.cpp',
             'Trie.cpp',
             'Util.cpp',

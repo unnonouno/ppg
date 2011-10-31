@@ -12,17 +12,17 @@ class Sentence;
 class ModelBuilder {
  public:
 
-  void procSentence(const Sentence& sentence);
+  void proc_sentence(const Sentence& sentence);
 
-  void appendUnigram(const std::string& word, const read_t& read);
+  void append_unigram(const std::string& word, const read_t& read);
 
-  void appendForward(const std::string& history,
-                     const std::string& word,
-                     const read_t& read);
-
-  void appendBackward(const std::string& history,
+  void append_forward(const std::string& history,
                       const std::string& word,
                       const read_t& read);
+
+  void append_backward(const std::string& history,
+                       const std::string& word,
+                       const read_t& read);
 
   void swap(Model& model);
 

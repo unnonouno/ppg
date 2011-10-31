@@ -23,11 +23,11 @@ enum State {
 
 class Model {
 public:
-  void swapUnigram(Unigram& unigram);
-  void swapForward(Ngram& forward);
-  void swapBackward(Ngram& backward);
+  void swap_unigram(Unigram& unigram);
+  void swap_forward(Ngram& forward);
+  void swap_backward(Ngram& backward);
 
-  bool tryMake(Sentence& sentence) const;
+  bool try_make(Sentence& sentence) const;
 private:
   friend class pfi::data::serialization::access;
 
@@ -36,18 +36,18 @@ private:
     a & forward & backward & unigram;
   }
 
-  bool sampleNext(bool go_right,
-                  read_t& read,
-                  std::vector<Word>& right,
-                  std::vector<Word>& left,
-                  State& state,
-                  bool ignore_eos
-                  ) const;
+  bool sample_next(bool go_right,
+                   read_t& read,
+                   std::vector<Word>& right,
+                   std::vector<Word>& left,
+                   State& state,
+                   bool ignore_eos
+                   ) const;
 
-  bool sampleCenter(std::string& r_center,
-                    read_t& r_read,
-                    State& state,
-                    read_t& rest) const;
+  bool sample_center(std::string& r_center,
+                     read_t& r_read,
+                     State& state,
+                     read_t& rest) const;
 
   Ngram forward;
   Ngram backward;

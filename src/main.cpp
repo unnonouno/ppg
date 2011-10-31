@@ -8,7 +8,7 @@
 #include <elog/elog.h>
 
 #include "fwd.hpp"
-#include "Kaibun.hpp"
+#include "Model.hpp"
 #include "Ngram.hpp"
 #include "Dictionary.hpp"
 #include "Sentence.hpp"
@@ -28,7 +28,7 @@ void proc_mecab(istream& in, Model& model, ReadManager& read_manager) {
   ModelBuilder builder;
   size_t count = 0;
   for (Sentence s; reader.get_sentence(s); ) {
-    builder.procSentence(s);
+    builder.proc_sentence(s);
     count += 1;
     if (count % 100 == 0)
       cout << count << endl;
@@ -56,7 +56,7 @@ void make_model(const string& model_file) {
 }
 
 
-string removeParen(const string& s) {
+string remove_paren(const string& s) {
   if (s.empty())
     return s;
   string ret;
@@ -75,10 +75,10 @@ string removeParen(const string& s) {
   return ret;
 }
 
-void printSentence(const Sentence& r, ReadManager& read_manager) {
+void print_sentence(const Sentence& r, ReadManager& read_manager) {
   cout << "----" << endl;
   FOREACH (i, r.words) {
-    string s = removeParen(i->str);
+    string s = remove_paren(i->str);
     cout << s << " ";
   }
   cout << endl;
@@ -111,7 +111,7 @@ void make_parindrome(const string& model_name) {
   while (true) {
     Sentence s;
     if (model.try_make(s)) {
-      printSentence(s, read_manager);
+      print_sentence(s, read_manager);
     } else {
       //cout << "fail" << endl;
     }
