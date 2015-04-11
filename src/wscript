@@ -1,19 +1,19 @@
 def build(bld):
     bld.stlib(
         source = [
-            'Random.cpp',
-            'Ngram.cpp',
-            'Model.cpp',
-            'HashTrie.cpp',
-            'Trie.cpp',
-            'Util.cpp',
-            'ArrayTrie.cpp',
-            'Dictionary.cpp',
-            'Unigram.cpp',
-            'ModelBuilder.cpp',
-            'ReadManager.cpp',
-            'ReadNormalizer.cpp',
-            'MecabReader.cpp',
+            'random.cpp',
+            'ngram.cpp',
+            'model.cpp',
+            'hash_trie.cpp',
+            'trie.cpp',
+            'util.cpp',
+            'array_trie.cpp',
+            'dictionary.cpp',
+            'unigram.cpp',
+            'model_builder.cpp',
+            'read_manager.cpp',
+            'read_normalizer.cpp',
+            'mecab_reader.cpp',
             ],
         target = 'ppg',
         name = 'libppg',
@@ -38,12 +38,12 @@ def build(bld):
         )
 
     test_source = [
-            'RandomTest.cpp',
-            'NgramTest.cpp',
-            'HashTrieTest.cpp',
-            'ArrayTrieTest.cpp',
-            'ReadManagerTest.cpp',
-            'ReadNormalizerTest.cpp',
+            'random_test.cpp',
+            'ngram_test.cpp',
+            'hash_trie_test.cpp',
+            'array_trie_test.cpp',
+            'read_manager_test.cpp',
+            'read_normalizer_test.cpp',
             ]
     for s in test_source:
         make_test(s)

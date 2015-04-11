@@ -1,7 +1,7 @@
 #pragma once
 
 #include <istream>
-#include "ReadManager.hpp"
+#include "read_manager.hpp"
 
 namespace ppg {
 

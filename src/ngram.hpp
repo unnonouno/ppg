@@ -5,7 +5,7 @@
 #include <pficommon/lang/shared_ptr.h>
 #include <pficommon/data/serialization.h>
 #include <pficommon/data/unordered_map.h>
-#include "TrieSerialization.hpp"
+#include "trie_serialization.hpp"
 
 namespace ppg {
 

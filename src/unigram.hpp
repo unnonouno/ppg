@@ -4,8 +4,8 @@
 #include <string>
 
 #include <pficommon/data/serialization.h>
-#include "TrieSerialization.hpp"
-#include "Trie.hpp"
+#include "trie_serialization.hpp"
+#include "trie.hpp"
 
 namespace ppg {
 

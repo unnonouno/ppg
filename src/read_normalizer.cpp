@@ -1,4 +1,4 @@
-#include "ReadNormalizer.hpp"
+#include "read_normalizer.hpp"
 
 using namespace pfi::data::string;
 

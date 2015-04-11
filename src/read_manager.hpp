@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "fwd.hpp"
-#include "ReadNormalizer.hpp"
+#include "read_normalizer.hpp"
 
 namespace ppg {
 

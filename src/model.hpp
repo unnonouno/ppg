@@ -6,9 +6,9 @@
 #include <pficommon/lang/shared_ptr.h>
 #include <pficommon/data/serialization.h>
 #include <pficommon/math/random.h>
-#include "Ngram.hpp"
-#include "Unigram.hpp"
-#include "Util.hpp"
+#include "ngram.hpp"
+#include "unigram.hpp"
+#include "util.hpp"
 
 namespace ppg {
 

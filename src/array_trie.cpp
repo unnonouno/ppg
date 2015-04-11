@@ -1,6 +1,6 @@
 #include <iostream>
-#include "ArrayTrie.hpp"
-#include "Util.hpp"
+#include "array_trie.hpp"
+#include "util.hpp"
 
 using namespace std;
 

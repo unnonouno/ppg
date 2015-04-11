@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "MecabReader.hpp"
-#include "Sentence.hpp"
+#include "mecab_reader.hpp"
+#include "sentence.hpp"
 
 using namespace std;
 

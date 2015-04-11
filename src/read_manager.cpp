@@ -1,4 +1,4 @@
-#include "ReadManager.hpp"
+#include "read_manager.hpp"
 
 using namespace std;
 using pfi::data::string::ustring;

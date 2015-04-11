@@ -7,14 +7,14 @@
 #include <pficommon/text/json.h>
 
 #include "fwd.hpp"
-#include "Model.hpp"
-#include "Ngram.hpp"
-#include "Dictionary.hpp"
-#include "Sentence.hpp"
-#include "ModelBuilder.hpp"
+#include "model.hpp"
+#include "ngram.hpp"
+#include "dictionary.hpp"
+#include "sentence.hpp"
+#include "model_builder.hpp"
 
-#include "ReadManager.hpp"
-#include "MecabReader.hpp"
+#include "read_manager.hpp"
+#include "mecab_reader.hpp"
 
 #include "cmdline.h"
 

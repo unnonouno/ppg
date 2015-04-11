@@ -1,9 +1,9 @@
-#include "Ngram.hpp"
-#include "Util.hpp"
-#include "HashTrie.hpp"
-#include "ArrayTrie.hpp"
-#include "Trie.hpp"
-#include "Dictionary.hpp"
+#include "ngram.hpp"
+#include "util.hpp"
+#include "hash_trie.hpp"
+#include "array_trie.hpp"
+#include "trie.hpp"
+#include "dictionary.hpp"
 
 namespace ppg {
 

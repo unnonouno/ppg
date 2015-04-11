@@ -1,8 +1,8 @@
-#include "ModelBuilder.hpp"
-#include "Model.hpp"
-#include "Unigram.hpp"
-#include "Ngram.hpp"
-#include "Sentence.hpp"
+#include "model_builder.hpp"
+#include "model.hpp"
+#include "unigram.hpp"
+#include "ngram.hpp"
+#include "sentence.hpp"
 
 namespace ppg {
 

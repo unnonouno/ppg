@@ -4,8 +4,8 @@
 
 #include <pficommon/lang/shared_ptr.h>
 #include <pficommon/data/serialization.h>
-#include "ArrayTrie.hpp"
-#include "HashTrie.hpp"
+#include "array_trie.hpp"
+#include "hash_trie.hpp"
 
 namespace ppg {
 
