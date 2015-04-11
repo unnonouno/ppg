@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include "hashtrie.hpp"
+#include "hash_trie.hpp"
 #include "util.hpp"
 
 namespace ppg {
