@@ -5,6 +5,8 @@ compiler:
   - clang
 
 before_install:
+  - sudo pip install PyYAML cpp-coveralls
+  - sudo apt-get install cppcheck
   - wget http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py
   - chmod +x cpplint.py
   - sudo mv cpplint.py /usr/local/bin
@@ -14,8 +16,14 @@ install:
   - unzip master.zip
   - pushd pficommon-master && ./waf configure && ./waf && sudo ./waf install && popd
   - sudo ldconfig
+  - rm -r pficommon-master
 
 script:
-  - ./waf configure
+  - ./waf configure --enable-gcov
   - ./waf --checkall
   - ./waf cpplint
+  - cppcheck src/*pp
+
+after_success:
+  - coveralls -b build -r . -E ".*_test.cpp" -E ".*/.unittest-gtest/.*" -e test.cpp -x .cpp -x .hpp
+
