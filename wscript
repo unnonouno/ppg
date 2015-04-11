@@ -15,7 +15,7 @@ def configure(ctx):
                   args='--cflags --libs',
                   atleast_version='1.3.0')
 
-    ctx.env.CXXFLAGS += ['-W', '-Wall', '-g', '-fopenmp', '-O2']
+    ctx.env.CXXFLAGS += ['-W', '-Wall', '-g', '-O2']
 
 
 def build(bld):

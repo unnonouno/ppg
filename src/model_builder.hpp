@@ -11,7 +11,7 @@
 namespace ppg {
 
 class Model;
-class Sentence;
+struct Sentence;
 
 class ModelBuilder {
  public:

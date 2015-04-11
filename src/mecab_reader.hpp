@@ -7,7 +7,7 @@
 
 namespace ppg {
 
-class Sentence;
+struct Sentence;
 
 class MecabReader {
  public:
