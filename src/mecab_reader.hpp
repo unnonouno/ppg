@@ -14,12 +14,12 @@ class MecabReader {
   MecabReader(std::istream& in, ReadManager& read_manager);
 
   bool get_sentence(Sentence& sentence);
-  
+
  private:
   std::istream& input;
   ReadManager& read_manager;
 };
 
-}
+}  // namespace ppg
 
 #endif  // MECAB_READER_HPP_0CA94B61_5835_4425_9F64_06A3850E1AF6_

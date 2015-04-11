@@ -1,6 +1,8 @@
 #include "read_normalizer.hpp"
 
-using namespace pfi::data::string;
+using pfi::data::string::string_to_ustring;
+using pfi::data::string::uchar;
+using pfi::data::string::ustring;
 
 namespace ppg {
 
@@ -24,4 +26,4 @@ uchar ReadNormalizer::normalizeChar(uchar ch) const {
   }
 }
 
-}
+}  // namespace ppg

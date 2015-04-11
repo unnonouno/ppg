@@ -1,4 +1,8 @@
-#pragma once
+#ifndef SENTENCE_HPP_C57B0EFE_06EC_4160_9DBA_14C95DEA5B73_
+#define SENTENCE_HPP_C57B0EFE_06EC_4160_9DBA_14C95DEA5B73_
+
+#include <string>
+#include <vector>
 
 #include "fwd.hpp"
 
@@ -16,4 +20,6 @@ struct Sentence {
   std::vector<Word> words;
 };
 
-}
+}  // namespace ppg
+
+#endif  // SENTENCE_HPP_C57B0EFE_06EC_4160_9DBA_14C95DEA5B73_

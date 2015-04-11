@@ -16,7 +16,7 @@ class ReadNormalizer {
   ReadNormalizer();
 
   uchar_t normalizeChar(uchar_t ch) const;
-  
+
  private:
   friend class pfi::data::serialization::access;
   template <class A>
@@ -25,10 +25,10 @@ class ReadNormalizer {
   }
 
   typedef pfi::data::unordered_map<uchar_t, uchar_t> map_t;
-  
+
   map_t normalize_map;
 };
 
-}
+}  // namespace ppg
 
 #endif  // READ_NORMALIZER_HPP_87CD4522_83F3_4CB8_8DA7_CC5AA171162E_

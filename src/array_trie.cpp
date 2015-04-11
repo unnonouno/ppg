@@ -1,21 +1,25 @@
 #include "array_trie.hpp"
 
 #include <iostream>
+#include <utility>
+#include <string>
 
 #include "util.hpp"
 
-using namespace std;
+using std::pair;
+using std::string;
 
 namespace ppg {
 
 bool
-ArrayTrie::get_ith(const read_t& read, 
-                   size_t i,
-                   string& r_word,
-                   read_t& r_read,
-                   bool ignore_empty) const {
+ArrayTrie::get_ith(
+    const read_t& read,
+    size_t i,
+    string& r_word,
+    read_t& r_read,
+    bool ignore_empty) const {
   read_t r;
-  FOREACH (c, read) {
+  FOREACH(c, read) {
     size_t pos = get_begin(r);
     if (pos < data.size() &&
         !(c == read.begin() && ignore_empty) && data[pos].read == r) {
@@ -39,11 +43,12 @@ ArrayTrie::get_ith(const read_t& read,
   size_t end = range.second;
   unsigned offset = get_offset(begin);
   unsigned goal = offset + i;
-  //LOG() << "(" << begin << ", " << end << ")";
-  //LOG() << "off(" << get_offset(begin) << ", " << get_offset(end) << ")";
-  
-  if (!(goal < get_offset(end)))
+  // LOG() << "(" << begin << ", " << end << ")";
+  // LOG() << "off(" << get_offset(begin) << ", " << get_offset(end) << ")";
+
+  if (!(goal < get_offset(end))) {
     return false;
+  }
 
   while (end - begin > 1) {
     size_t index = (begin + end) / 2;
@@ -72,10 +77,10 @@ ArrayTrie::insert(const read_t& read, const string& str, unsigned n) {
 }
 
 void
-ArrayTrie::print(ostream& out) const {
+ArrayTrie::print(std::ostream& out) const {
   unsigned last = 0;
   for (size_t i = 0; i < data.size(); i++) {
-    out << data[i].str << ": " << (data[i].count - last) << endl;
+    out << data[i].str << ": " << (data[i].count - last) << std::endl;
     last = data[i].count;
   }
 }
@@ -84,8 +89,8 @@ size_t
 ArrayTrie::count_total(const read_t& read, bool ignore_empty) const {
   size_t total = 0;
   read_t r;
-  //LOG(ERROR, "hist: " << read_to_str(read));
-  FOREACH (c, read) {
+  // LOG(ERROR, "hist: " << read_to_str(read));
+  FOREACH(c, read) {
     size_t pos = get_begin(r);
     if (pos < data.size() &&
         !(c == read.begin() && ignore_empty) &&
@@ -106,9 +111,13 @@ ArrayTrie::count_total(const read_t& read, bool ignore_empty) const {
 
 unsigned
 ArrayTrie::get_count(size_t pos) const {
-  if (data.empty()) return 0;
-  else if (pos == 0) return data[pos].count;
-  else return data[pos].count - data[pos - 1].count;
+  if (data.empty()) {
+    return 0;
+  } else if (pos == 0) {
+    return data[pos].count;
+  } else {
+    return data[pos].count - data[pos - 1].count;
+  }
 }
 
 static read_t next_read(const read_t& read) {
@@ -133,7 +142,7 @@ ArrayTrie::get_range(const read_t& read) const {
     end = data.size();
   else
     end = get_begin(end_read);
-  return make_pair(begin, end);
+  return std::make_pair(begin, end);
 }
 
 size_t
@@ -152,10 +161,11 @@ ArrayTrie::get_begin(const read_t& read) const {
 
 unsigned
 ArrayTrie::get_offset(size_t index) const {
-  if (index == 0)
+  if (index == 0) {
     return 0;
-  else
+  } else {
     return data[index - 1].count;
+  }
 }
 
-}
+}  // namespace ppg

@@ -4,8 +4,8 @@
 
 #include "read_normalizer.hpp"
 
-using namespace std;
-using namespace pfi::data::string;
+using pfi::data::string::string_to_uchar;
+using pfi::data::string::uchar;
 
 namespace ppg {
 
@@ -19,4 +19,4 @@ TEST(ReadNormalizer, trivial) {
   EXPECT_EQ(KA, n.normalizeChar(GA));
 }
 
-}
+}  // namespace ppg

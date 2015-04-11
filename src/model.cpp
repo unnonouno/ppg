@@ -1,15 +1,20 @@
+#include "model.hpp"
+
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "fwd.hpp"
 #include "ngram.hpp"
 #include "util.hpp"
 #include "random.hpp"
 #include "sentence.hpp"
-#include "model.hpp"
+
+using std::pair;
+using std::string;
+using std::vector;
 
 namespace ppg {
-
-using namespace std;
 
 static State op[] = { BALANCE, LEFT, RIGHT };
 
@@ -17,9 +22,10 @@ State opposite(State s) {
   return op[s];
 }
 
-bool is_parindrome(const read_t& read,
-                   const int l,
-                   const int r) {
+bool is_parindrome(
+    const read_t& read,
+    const int l,
+    const int r) {
   for (int il = l, ir = r; il < ir; il++, ir--) {
     if (read[il] != read[ir])
       return false;
@@ -27,31 +33,32 @@ bool is_parindrome(const read_t& read,
   return true;
 }
 
-bool Model::sample_next(bool go_right,
-                        read_t& read,
-                        vector<Word>& right,
-                        vector<Word>& left,
-                        State& state,
-                        bool ignore_eos
-                        ) const {
+bool Model::sample_next(
+    bool go_right,
+    read_t& read,
+    vector<Word>& right,
+    vector<Word>& left,
+    State& state,
+    bool ignore_eos) const {
   const vector<Word>& h = go_right ? right : left;
   const string& history = h[h.size() - 1].str;
-  //LOG() << "kaibun::sample_next:  history: " << history << " read: " << read;
+  // LOG() << "kaibun::sample_next:  history: " << history << " read: " << read;
 
   const unsigned len = read.size();
   const Ngram& ngram = go_right ? forward : backward;
 
   string r;
   read_t r_read;
-  if (!ngram.sample(history, read, r, r_read, ignore_eos))
+  if (!ngram.sample(history, read, r, r_read, ignore_eos)) {
     return false;
-  //LOG() << r << r_read;
+  }
+  // LOG() << r << r_read;
   const unsigned res_len = r_read.size();
   if (len == res_len) {
     state = BALANCE;
     read.clear();
   } else if (len < res_len) {
-    //state = opposite(state);
+    // state = opposite(state);
     state = go_right ? LEFT : RIGHT;
     read.clear();
     for (unsigned i = len; i < res_len; i++)
@@ -60,7 +67,7 @@ bool Model::sample_next(bool go_right,
     state = go_right ? RIGHT : LEFT;
     read.erase(read.begin(), read.begin() + res_len);
   }
-  //LOG() << read;
+  // LOG() << read;
 
   if (go_right) {
     right.push_back(Word(r, r_read));
@@ -72,10 +79,11 @@ bool Model::sample_next(bool go_right,
   return true;
 }
 
-bool Model::sample_center(string& r_center,
-                          read_t& r_read,
-                          State& state,
-                          read_t& rest) const {
+bool Model::sample_center(
+    string& r_center,
+    read_t& r_read,
+    State& state,
+    read_t& rest) const {
   if (!unigram.sample(r_center, r_read))
     return false;
 
@@ -106,8 +114,8 @@ bool Model::sample_center(string& r_center,
   }
   if (cands.empty())
     return false;
-  //FOREACH (c, cands)
-  //LOG(DEBUG, c->first << " " << read_to_str(c->second));
+  // FOREACH (c, cands)
+  // LOG(DEBUG, c->first << " " << read_to_str(c->second));
   unsigned id = random_int(cands.size());
   state = cands[id].first;
   rest = cands[id].second;
@@ -121,13 +129,13 @@ bool Model::try_make(Sentence& ret) const {
 
   string center;
   read_t center_read;
-  
-  //LOG() << "start";
-  //unigram.sample(read_t(), center, read);
+
+  // LOG() << "start";
+  // unigram.sample(read_t(), center, read);
   if (!sample_center(center, center_read, state, read))
     return false;
 
-  //LOG() << "center: " << center << " " << state << " " << center_read;
+  // LOG() << "center: " << center << " " << state << " " << center_read;
 
   right.push_back(Word(center, center_read));
   left.push_back(Word(center, center_read));
@@ -138,7 +146,7 @@ bool Model::try_make(Sentence& ret) const {
     depth++;
     if (depth == 30)
       return false;
-    //LOG(DEBUG, state << ' ' << read_to_str(read));
+    // LOG(DEBUG, state << ' ' << read_to_str(read));
     switch (state) {
       case BALANCE: {
         if (!sample_next(true,
@@ -150,10 +158,10 @@ bool Model::try_make(Sentence& ret) const {
             return false;
           if (state == BALANCE) {
             // success
-            FOREACH_REV (p, left) {
+            FOREACH_REV(p, left) {
               ret.words.push_back(*p);
             }
-            FOREACH (p, right) {
+            FOREACH(p, right) {
               // skip the first pair
               if (p != right.begin()) {
                 ret.words.push_back(*p);
@@ -167,7 +175,7 @@ bool Model::try_make(Sentence& ret) const {
         }
       }
       break;
-      
+
       case RIGHT: case LEFT: {
         /*
           unsigned r = randomInt(depth + 3);
@@ -177,7 +185,7 @@ bool Model::try_make(Sentence& ret) const {
         if (!sample_next(state == RIGHT,
                          read, right, left, state, true))
           return false;
-        
+
         bool eos = (state == RIGHT ?
                     right.back().read.empty() :
                     left.back().read.empty());
@@ -201,5 +209,4 @@ void Model::swap_backward(Ngram& backward) {
   Model::backward.swap(backward);
 }
 
-}
-
+}  // namespace ppg

@@ -6,19 +6,24 @@
 #include <pficommon/data/serialization.h>
 #include <pficommon/text/json.h>
 
-#include "fwd.hpp"
-#include "model.hpp"
-#include "ngram.hpp"
+#include "./cmdline.h"
+
 #include "dictionary.hpp"
-#include "sentence.hpp"
-#include "model_builder.hpp"
-
-#include "read_manager.hpp"
+#include "fwd.hpp"
 #include "mecab_reader.hpp"
+#include "model.hpp"
+#include "model_builder.hpp"
+#include "ngram.hpp"
+#include "read_manager.hpp"
+#include "sentence.hpp"
 
-#include "cmdline.h"
-
-using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+using std::ifstream;
+using std::istream;
+using std::ofstream;
 
 namespace ppg {
 
@@ -35,10 +40,6 @@ void proc_mecab(istream& in, Model& model, ReadManager& read_manager) {
   builder.swap(model);
 }
 
-}
-
-using namespace ppg;
-
 void make_model(const string& model_file) {
   ReadManager read_manager;
   Model model;
@@ -47,13 +48,12 @@ void make_model(const string& model_file) {
 
   ofstream file(model_file.c_str());
   pfi::data::serialization::binary_oarchive out(file);
-  //pfi::data::serialization::json_oarchive out(file);
+  // pfi::data::serialization::json_oarchive out(file);
   out << Dictionary::inst();
   out << model;
   out << read_manager;
   file.close();
 }
-
 
 string remove_paren(const string& s) {
   if (s.empty())
@@ -76,14 +76,14 @@ string remove_paren(const string& s) {
 
 void print_sentence(const Sentence& r, ReadManager& read_manager) {
   cout << "----" << endl;
-  FOREACH (i, r.words) {
+  FOREACH(i, r.words) {
     string s = remove_paren(i->str);
     cout << s << " ";
   }
   cout << endl;
-  
-  FOREACH (i, r.words) {
-    //string s = i->str.substr(0, i->str.find('('));
+
+  FOREACH(i, r.words) {
+    // string s = i->str.substr(0, i->str.find('('));
     string s = i->str;
     cout << s << ":";
     cout << read_manager.read_to_string(i->read);
@@ -98,7 +98,7 @@ void make_parindrome(const string& model_name) {
   {
     ifstream file(model_name.c_str());
     pfi::data::serialization::binary_iarchive in(file);
-    //pfi::data::serialization::json_iarchive in(file);
+    // pfi::data::serialization::json_iarchive in(file);
     cout << "reading" << endl;
     in >> Dictionary::inst();
     in >> model;
@@ -112,10 +112,12 @@ void make_parindrome(const string& model_name) {
     if (model.try_make(s)) {
       print_sentence(s, read_manager);
     } else {
-      //cout << "fail" << endl;
+      // cout << "fail" << endl;
     }
   }
 }
+
+}  // namespace ppg
 
 int main(int argc, char* argv[]) {
   cmdline::parser p;
@@ -124,11 +126,11 @@ int main(int argc, char* argv[]) {
 
   p.parse_check(argc, argv);
 
-  //LOG::SetDefaultLoggerLevel(LOG::ERROR);
+  // LOG::SetDefaultLoggerLevel(LOG::ERROR);
 
   if (p.exist("make")) {
-    make_model(p.get<string>("model"));
+    ppg::make_model(p.get<string>("model"));
   } else {
-    make_parindrome(p.get<string>("model"));
+    ppg::make_parindrome(p.get<string>("model"));
   }
 }

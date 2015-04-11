@@ -1,11 +1,14 @@
 #include "mecab_reader.hpp"
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "sentence.hpp"
 
-using namespace std;
+using std::istream;
+using std::string;
+using std::vector;
 
 namespace ppg {
 
@@ -25,7 +28,7 @@ vector<string> split(const string& s, const string& delim) {
   return ret;
 }
 
-MecabReader::MecabReader(istream& in, ReadManager& read_manager) 
+MecabReader::MecabReader(istream& in, ReadManager& read_manager)
     : input(in), read_manager(read_manager) {
 }
 
@@ -51,8 +54,9 @@ bool MecabReader::get_sentence(Sentence& sentence) {
     vector<string> features = split(ss[1], ",");
     string pos = features[0] + ":" + features[1];
     read_t r = read_manager.string_to_read(features[features.size() - 2]);
-    if (r.empty() || ss[0] == "…") 
+    if (r.empty() || ss[0] == "…") {
       return true;
+    }
     string str = ss[0] + "(" + pos + ")";
 
     word += str;
@@ -64,11 +68,9 @@ bool MecabReader::get_sentence(Sentence& sentence) {
       read.clear();
     }
 
-    //sentence.words.push_back(Word(str, read));
+    // sentence.words.push_back(Word(str, read));
   }
   return false;
 }
 
-
-
-}
+}  // namespace ppg

@@ -2,8 +2,7 @@
 
 #include "read_manager.hpp"
 
-using namespace std;
-using namespace pfi::data::string;
+using pfi::data::string::ustring;
 
 namespace ppg {
 
@@ -54,4 +53,4 @@ TEST(ReadManager, normalize) {
   EXPECT_EQ(read_kakiku, read_gagigu);
 }
 
-}
+}  // namespace ppg

@@ -1,26 +1,31 @@
 #include "util.hpp"
 
+#include <string>
 #include <sstream>
 #include <vector>
 
-namespace ppg {
+using std::string;
+using std::stringstream;
+using std::vector;
 
-using namespace std;
+namespace ppg {
 
 vector<char_t> str_to_read(const string& s) {
   vector<char_t> v;
 
-  FOREACH (c, s)
+  FOREACH(c, s) {
     v.push_back(*c);
+  }
   return v;
 }
 
 string read_to_str(const read_t& r) {
   stringstream s;
 
-  FOREACH (it, r)
+  FOREACH(it, r) {
     s << (*it) << "-";
+  }
   return s.str();
 }
 
-}
+}  // namespace ppg

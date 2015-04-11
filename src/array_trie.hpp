@@ -3,6 +3,7 @@
 
 #include <ostream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <pficommon/data/serialization.h>
@@ -13,23 +14,26 @@
 namespace ppg {
 
 class ArrayTrie : public Trie {
-public:
+ public:
   virtual ~ArrayTrie() {}
 
-  bool get_ith(const read_t& read,
-               size_t i,
-               std::string& r_word,
-               read_t& r_read,
-               bool ignore_empty = false) const;
+  bool get_ith(
+      const read_t& read,
+      size_t i,
+      std::string& r_word,
+      read_t& r_read,
+      bool ignore_empty = false) const;
 
-  void insert(const read_t& read,
-              const std::string& str,
-              unsigned n);
+  void insert(
+      const read_t& read,
+      const std::string& str,
+      unsigned n);
 
   void print(std::ostream& out) const;
 
-  size_t count_total(const read_t& read,
-                     bool ignore_empty = false) const;
+  size_t count_total(
+      const read_t& read,
+      bool ignore_empty = false) const;
 
   struct Node {
     read_t read;
@@ -43,7 +47,7 @@ public:
     }
   };
 
-private:
+ private:
   friend class pfi::data::serialization::access;
   template <class A>
   void serialize(A &a) {
@@ -61,6 +65,6 @@ private:
   std::vector<Node> data;
 };
 
-}
+}  // namespace ppg
 
 #endif  // ARRAY_TRIE_HPP_406F0A9E_83CA_4242_B87F_DD7ACCB0E46C_

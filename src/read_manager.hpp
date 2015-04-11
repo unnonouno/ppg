@@ -41,6 +41,6 @@ class ReadManager {
   ReadNormalizer normalizer;
 };
 
-}
+}  // namespace ppg
 
 #endif  // READ_MANAGER_HPP_F244B187_B9DF_4A48_BEB3_4579F74FF7B3_

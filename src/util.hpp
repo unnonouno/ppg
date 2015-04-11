@@ -27,7 +27,7 @@ std::string read_to_str(const read_t&);
 template <typename T>
 std::ostream& operator << (std::ostream& out, const std::vector<T>& v) {
   out << "[";
-  FOREACH (x, v) {
+  FOREACH(x, v) {
     if (x != v.begin())
       out << ';';
     out << *x;

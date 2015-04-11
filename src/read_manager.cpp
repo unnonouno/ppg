@@ -1,6 +1,8 @@
 #include "read_manager.hpp"
 
-using namespace std;
+#include <string>
+
+using std::string;
 using pfi::data::string::ustring;
 using pfi::data::string::uchar;
 
@@ -45,4 +47,4 @@ string ReadManager::read_to_string(const read_t& read) {
   return pfi::data::string::ustring_to_string(read_to_ustring(read));
 }
 
-}
+}  // namespace ppg

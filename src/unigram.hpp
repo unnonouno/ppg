@@ -1,6 +1,7 @@
 #ifndef UNIGRAM_HPP_82B7E0C2_D813_479B_984C_8CBCA98BE973_
 #define UNIGRAM_HPP_82B7E0C2_D813_479B_984C_8CBCA98BE973_
 
+#include <algorithm>
 #include <string>
 
 #include <pficommon/data/serialization.h>
@@ -32,6 +33,6 @@ class Unigram {
   pfi::lang::shared_ptr<Trie> trie;
 };
 
-}
+}  // namespace ppg
 
 #endif  // UNIGRAM_HPP_82B7E0C2_D813_479B_984C_8CBCA98BE973_

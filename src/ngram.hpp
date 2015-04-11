@@ -1,6 +1,7 @@
 #ifndef NGRAM_HPP_99986610_3FCF_4269_A29D_5A3168218D5D_
 #define NGRAM_HPP_99986610_3FCF_4269_A29D_5A3168218D5D_
 
+#include <algorithm>
 #include <string>
 
 #include <pficommon/data/serialization.h>
@@ -15,17 +16,19 @@ namespace ppg {
 class Ngram {
  public:
   static std::string none;
-  
-  void insert(const std::string& history,
-              const std::string& word,
-              const read_t& read,
-              unsigned count = 1);
-  
-  bool sample(const std::string& str,
-              const read_t& label,
-              std::string& r_word,
-              read_t& r_read,
-              bool ignore_eos) const;
+
+  void insert(
+      const std::string& history,
+      const std::string& word,
+      const read_t& read,
+      unsigned count = 1);
+
+  bool sample(
+      const std::string& str,
+      const read_t& label,
+      std::string& r_word,
+      read_t& r_read,
+      bool ignore_eos) const;
 
   void swap(Ngram& ngram);
 
@@ -40,6 +43,6 @@ class Ngram {
   table_t table;
 };
 
-}
+}  // namespace ppg
 
 #endif  // NGRAM_HPP_99986610_3FCF_4269_A29D_5A3168218D5D_

@@ -1,14 +1,15 @@
 #include <iostream>
 #include <sstream>
+#include <string>
 
 #include <gtest/gtest.h>
 
 #include "hash_trie.hpp"
 #include "util.hpp"
 
-namespace ppg {
+using std::string;
 
-using namespace std;
+namespace ppg {
 
 TEST(hash_trie, trivial) {
   HashTrie t;
@@ -74,4 +75,4 @@ TEST(hash_trie, trivial) {
        r1 == abd && r2 == abc && r3 == abc));
 }
 
-}
+}  // namespace ppg

@@ -1,14 +1,15 @@
 #include <algorithm>
 #include <iostream>
+#include <string>
 
 #include <gtest/gtest.h>
 
 #include "array_trie.hpp"
 #include "util.hpp"
 
-namespace ppg {
+using std::string;
 
-using namespace std;
+namespace ppg {
 
 bool operator ==(const read_t& r1, const read_t& r2) {
   if (r1.size() != r2.size())
@@ -77,4 +78,4 @@ TEST(array_trie, trivial) {
   EXPECT_EQ(abd, r);
 }
 
-}
+}  // namespace ppg

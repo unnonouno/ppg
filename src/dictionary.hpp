@@ -1,6 +1,7 @@
 #ifndef DICTIONARY_HPP_5E25FCC3_50CF_45AB_89AC_7F4F43FFFFFC_
 #define DICTIONARY_HPP_5E25FCC3_50CF_45AB_89AC_7F4F43FFFFFC_
 
+#include <string>
 #include <vector>
 
 #include <pficommon/data/unordered_map.h>
@@ -11,14 +12,14 @@
 namespace ppg {
 
 class Dictionary {
-public:
+ public:
   static Dictionary& inst() { return instance; }
 
   int id_of_string(const std::string& str) const;
 
   const std::string& string_of_id(int id) const;
 
-private:
+ private:
   static Dictionary instance;
 
   friend class pfi::data::serialization::access;
@@ -33,6 +34,6 @@ private:
   mutable int next_id;
 };
 
-}
+}  // namespace ppg
 
 #endif  // DICTIONARY_HPP_5E25FCC3_50CF_45AB_89AC_7F4F43FFFFFC_

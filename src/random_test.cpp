@@ -12,4 +12,4 @@ TEST(random, trivial) {
   }
 }
 
-}
+}  // namespace ppg
