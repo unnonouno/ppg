@@ -1,0 +1,21 @@
+language: cpp
+
+compiler:
+  - gcc
+  - clang
+
+before_install:
+  - wget http://google-styleguide.googlecode.com/svn/trunk/cpplint/cpplint.py
+  - chmod +x cpplint.py
+  - sudo mv cpplint.py /usr/local/bin
+
+install:
+  - wget https://github.com/pfi/pficommon/archive/master.zip
+  - unzip master.zip
+  - pushd pficommon-master && ./waf configure && ./waf && sudo ./waf install && popd
+  - sudo ldconfig
+
+script:
+  - ./waf configure
+  - ./waf --checkall
+  - ./waf cpplint
