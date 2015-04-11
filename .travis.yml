@@ -16,6 +16,7 @@ install:
   - unzip master.zip
   - pushd pficommon-master && ./waf configure && ./waf && sudo ./waf install && popd
   - sudo ldconfig
+  - rm -r pficommon-master
 
 script:
   - ./waf configure --enable-gcov
