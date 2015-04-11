@@ -2,4 +2,6 @@
 *.pyc
 data
 build
-.*
+.waf*
+.lock*
+.unittest-gtest*
