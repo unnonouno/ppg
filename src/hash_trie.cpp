@@ -2,13 +2,10 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <string>
 #include <vector>
 
-#include "dictionary.hpp"
 #include "util.hpp"
 
-using std::string;
 using std::vector;
 
 namespace ppg {
@@ -45,7 +42,7 @@ bool
 HashTrie::get_ith(
     const read_t& read,
     size_t i,
-    string& r_word,
+    id_t& r_word,
     read_t& r_read,
     bool ignore_empty) const {
   r_read.clear();
@@ -61,7 +58,7 @@ HashTrie::iter_get(
     const vector<char_t>& read,
     size_t pos,
     size_t i,
-    string& r_word,
+    id_t& r_word,
     read_t& r_read) const {
   if (pos == read.size() || node.n_elements > i) {
     return node.get_ith(i, r_word, r_read);
@@ -80,13 +77,13 @@ HashTrie::iter_get(
 bool
 HashTrie::Node::get_ith(
     size_t i,
-    string& r_word,
+    id_t& r_word,
     read_t& r_read) const {
   if (n_elements > i) {
     // found at this node
     FOREACH(e, elements) {
       if (e->first > i) {
-        r_word = Dictionary::inst().string_of_id(e->second);
+        r_word = e->second;
         return true;
       } else {
         i -= e->first;
@@ -110,7 +107,7 @@ HashTrie::Node::get_ith(
 void
 HashTrie::insert(
     const vector<char_t>& read,
-    const string& str,
+    id_t str,
     unsigned n) {
   root.iter_insert(read, 0, str, n);
 }
@@ -119,7 +116,7 @@ void
 HashTrie::Node::iter_insert(
     const read_t& read,
     unsigned i,
-    const string& str,
+    id_t str,
     unsigned n) {
   if (i == read.size()) {
     insert_here(str, n);
@@ -133,16 +130,15 @@ HashTrie::Node::iter_insert(
 }
 
 void
-HashTrie::Node::insert_here(const string& str, unsigned n) {
-  int id = Dictionary::inst().id_of_string(str);
+HashTrie::Node::insert_here(id_t str, unsigned n) {
   n_elements += n;
   FOREACH(e, elements) {
-    if (e->second == id) {
+    if (e->second == str) {
       e->first += n;
       return;
     }
   }
-  elements.push_back(std::make_pair(n, id));
+  elements.push_back(std::make_pair(n, str));
 }
 
 void
@@ -152,10 +148,15 @@ HashTrie::print(std::ostream& out) const {
 
 void
 HashTrie::Node::iter_print(std::ostream& out, size_t indent) const {
-  out << string(indent * 2, ' ')
-      << "(e: " << n_elements << ", c: " << n_children << ")" << std::endl;
+  for (size_t i = 0; i < indent * 2; ++i) {
+    out << ' ';
+  }
+  out << "(e: " << n_elements << ", c: " << n_children << ")" << std::endl;
   FOREACH(c, children) {
-    out << string(indent * 2, ' ') << c->first << std::endl;
+    for (size_t i = 0; i < indent * 2; ++i) {
+      out << ' ';
+    }
+    out << c->first << std::endl;
     c->second->iter_print(out, indent + 1);
   }
 }

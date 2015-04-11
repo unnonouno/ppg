@@ -13,25 +13,20 @@ namespace ppg {
 
 class Dictionary {
  public:
-  static Dictionary& inst() { return instance; }
+  id_t id_of_string(const std::string& str) const;
 
-  int id_of_string(const std::string& str) const;
-
-  const std::string& string_of_id(int id) const;
+  const std::string& string_of_id(id_t id) const;
 
  private:
-  static Dictionary instance;
-
   friend class pfi::data::serialization::access;
 
   template <class A>
   void serialize(A &a) {
-    a & id_to_str & str_to_id & next_id;
+    a & id_to_str & str_to_id;
   }
 
   mutable std::vector<std::string> id_to_str;
-  mutable pfi::data::unordered_map<std::string, int> str_to_id;
-  mutable int next_id;
+  mutable pfi::data::unordered_map<std::string, id_t> str_to_id;
 };
 
 }  // namespace ppg

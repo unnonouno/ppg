@@ -49,7 +49,6 @@ void make_model(const string& model_file) {
   ofstream file(model_file.c_str());
   pfi::data::serialization::binary_oarchive out(file);
   // pfi::data::serialization::json_oarchive out(file);
-  out << Dictionary::inst();
   out << model;
   out << read_manager;
   file.close();
@@ -100,7 +99,6 @@ void make_parindrome(const string& model_name) {
     pfi::data::serialization::binary_iarchive in(file);
     // pfi::data::serialization::json_iarchive in(file);
     cout << "reading" << endl;
-    in >> Dictionary::inst();
     in >> model;
     in >> read_manager;
     cout << "done" << endl;

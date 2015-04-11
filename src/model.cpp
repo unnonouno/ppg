@@ -4,6 +4,7 @@
 #include <utility>
 #include <vector>
 
+#include "dictionary.hpp"
 #include "fwd.hpp"
 #include "ngram.hpp"
 #include "util.hpp"
@@ -42,14 +43,15 @@ bool Model::sample_next(
     bool ignore_eos) const {
   const vector<Word>& h = go_right ? right : left;
   const string& history = h[h.size() - 1].str;
+  id_t history_id = dictionary.id_of_string(history);
   // LOG() << "kaibun::sample_next:  history: " << history << " read: " << read;
 
   const unsigned len = read.size();
   const Ngram& ngram = go_right ? forward : backward;
 
-  string r;
+  id_t r;
   read_t r_read;
-  if (!ngram.sample(history, read, r, r_read, ignore_eos)) {
+  if (!ngram.sample(history_id, read, r, r_read, ignore_eos)) {
     return false;
   }
   // LOG() << r << r_read;
@@ -69,18 +71,19 @@ bool Model::sample_next(
   }
   // LOG() << read;
 
+  std::string rword = dictionary.string_of_id(r);
   if (go_right) {
-    right.push_back(Word(r, r_read));
+    right.push_back(Word(rword, r_read));
   } else {
     read_t rev(r_read.rbegin(), r_read.rend());
-    left.push_back(Word(r, rev));
+    left.push_back(Word(rword, rev));
   }
 
   return true;
 }
 
 bool Model::sample_center(
-    string& r_center,
+    id_t& r_center,
     read_t& r_read,
     State& state,
     read_t& rest) const {
@@ -127,16 +130,17 @@ bool Model::try_make(Sentence& ret) const {
   State state = BALANCE;
   read_t read;
 
-  string center;
+  id_t center_id;
   read_t center_read;
 
   // LOG() << "start";
   // unigram.sample(read_t(), center, read);
-  if (!sample_center(center, center_read, state, read))
+  if (!sample_center(center_id, center_read, state, read))
     return false;
 
   // LOG() << "center: " << center << " " << state << " " << center_read;
 
+  std::string center = dictionary.string_of_id(center_id);
   right.push_back(Word(center, center_read));
   left.push_back(Word(center, center_read));
 
@@ -196,6 +200,10 @@ bool Model::try_make(Sentence& ret) const {
         break;
     }
   }
+}
+
+void Model::swap_dictionary(Dictionary& dictionary) {
+  Model::dictionary = dictionary;
 }
 
 void Model::swap_unigram(Unigram& unigram) {

@@ -7,7 +7,7 @@ namespace ppg {
 
 TEST(ngram, trivial) {
   Ngram n;
-  n.insert("HOGE", "GOH", str_to_read("GOH"));
+  n.insert(1, 2, str_to_read("GOH"));
 }
 
 }

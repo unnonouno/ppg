@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "dictionary.hpp"
 #include "model.hpp"
 #include "unigram.hpp"
 #include "ngram.hpp"
@@ -43,37 +44,44 @@ void ModelBuilder::proc_sentence(const Sentence& sentence) {
 void ModelBuilder::append_unigram(
     const std::string& word,
     const read_t& read) {
-  unigram_map[make_pair(read, word)] += 1;
+  id_t word_id = dictionary.id_of_string(word);
+  unigram_map[make_pair(read, word_id)] += 1;
 }
 
 void ModelBuilder::append_forward(
     const std::string& history,
     const std::string& word,
     const read_t& read) {
-  forward_map[history][make_pair(read, word)] += 1;
+  id_t history_id = dictionary.id_of_string(history);
+  id_t word_id = dictionary.id_of_string(word);
+  forward_map[history_id][make_pair(read, word_id)] += 1;
 }
 
 void ModelBuilder::append_backward(
     const std::string& history,
     const std::string& word,
     const read_t& read) {
-  backward_map[history][make_pair(read, word)] += 1;
+  id_t history_id = dictionary.id_of_string(history);
+  id_t word_id = dictionary.id_of_string(word);
+  backward_map[history_id][make_pair(read, word_id)] += 1;
 }
 
 void ModelBuilder::swap(Model& model) {
   Unigram unigram;
   FOREACH(it, unigram_map) {
-    unigram.insert(it->first.second, it->first.first, it->second);
+    unigram.insert(it->first.second,
+                   it->first.first,
+                   it->second);
   }
 
   Ngram forward;
   FOREACH(it, forward_map) {
     FOREACH(it2, it->second) {
       // if (it2->second >= 4)
-        forward.insert(it->first,
-                       it2->first.second,
-                       it2->first.first,
-                       it2->second);
+      forward.insert(it->first,
+                     it2->first.second,
+                     it2->first.first,
+                     it2->second);
     }
   }
   Ngram backward;
@@ -88,6 +96,7 @@ void ModelBuilder::swap(Model& model) {
   }
 
   // return Model(forward, backward, unigram);
+  model.swap_dictionary(dictionary);
   model.swap_unigram(unigram);
   model.swap_forward(forward);
   model.swap_backward(backward);

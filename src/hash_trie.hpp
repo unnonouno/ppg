@@ -2,7 +2,6 @@
 #define HASH_TRIE_HPP_AF7AB88E_ECB6_4F95_AE99_C5939CFEFA70_
 
 #include <iosfwd>
-#include <string>
 #include <utility>
 #include <vector>
 
@@ -27,13 +26,13 @@ class HashTrie : public Trie {
   bool get_ith(
       const read_t& read,
       size_t i,
-      std::string& r_word,
+      id_t& r_word,
       read_t& r_read,
       bool ignore_empty = false) const;
 
   void insert(
       const read_t& read,
-      const std::string& str,
+      id_t str,
       unsigned n);
 
   size_t count_total(const read_t& read, bool ignore_empty = false) const;
@@ -49,8 +48,6 @@ class HashTrie : public Trie {
     a & root;
   }
 
-  static const std::string not_found;
-
   size_t
   iter_count(
       const Node& node,
@@ -64,7 +61,7 @@ class HashTrie : public Trie {
       const read_t& read,
       size_t pos,
       size_t i,
-      std::string& r_word,
+      id_t& r_word,
       read_t& r_read) const;
 
  public:
@@ -72,12 +69,12 @@ class HashTrie : public Trie {
     typedef pfi::data::unordered_map<char_t, pfi::lang::shared_ptr<Node> >
       child_t;
 
-    bool get_ith(size_t i, std::string& r_word, read_t& r_read) const;
+    bool get_ith(size_t i, id_t& r_word, read_t& r_read) const;
 
     void
     iter_insert(
         const std::vector<char_t>& read,
-        const std::string& str,
+        id_t str,
         unsigned n,
         size_t id);
 
@@ -88,19 +85,19 @@ class HashTrie : public Trie {
       return n_elements + n_children;
     }
 
-    void insert_here(const std::string& str, unsigned n);
+    void insert_here(id_t str, unsigned n);
 
     void iter_insert(
         const read_t& read,
         unsigned i,
-        const std::string& str,
+        id_t str,
         unsigned n);
 
     void iter_print(std::ostream& out, size_t indent) const;
 
     unsigned n_elements;
     unsigned n_children;
-    std::vector<std::pair<unsigned, int> > elements;
+    std::vector<std::pair<unsigned, id_t> > elements;
     child_t children;
 
     friend class pfi::data::serialization::access;

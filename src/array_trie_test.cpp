@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <iostream>
-#include <string>
 
 #include <gtest/gtest.h>
 
@@ -8,7 +7,6 @@
 #include "util.hpp"
 
 using std::cout;
-using std::string;
 
 namespace ppg {
 
@@ -19,40 +17,42 @@ bool operator ==(const read_t& r1, const read_t& r2) {
 }
 
 TEST(array_trie, trivial) {
-  std::cerr << "array trie"  << std::endl;
   ArrayTrie t;
-  read_t abc = str_to_read("ABC");
-  read_t ab = str_to_read("AB");
   read_t a = str_to_read("A");
+  read_t ab = str_to_read("AB");
+  read_t abc = str_to_read("ABC");
   read_t abd = str_to_read("ABD");
+  id_t i_a = 0;
+  id_t i_abc = 2;
+  id_t i_abd = 3;
 
-  t.insert(abc, "ABC", 1);
+  t.insert(abc, i_abc, 1);
   t.print(cout);
 
   read_t r;
-  string w;
+  id_t w;
   t.get_ith(abc, 0, w, r);
-  EXPECT_EQ("ABC", w);
+  EXPECT_EQ(i_abc, w);
   EXPECT_EQ(abc, r);
 
-  t.insert(abc, "ABC", 1);
+  t.insert(abc, i_abc, 1);
 
   t.get_ith(ab, 0, w, r);
-  EXPECT_EQ("ABC", w);
+  EXPECT_EQ(i_abc, w);
   EXPECT_EQ(abc, r);
   t.get_ith(ab, 1, w, r);
-  EXPECT_EQ("ABC", w);
+  EXPECT_EQ(i_abc, w);
   EXPECT_EQ(abc, r);
 
-  t.insert(abd, "ABD", 1);
+  t.insert(abd, i_abd, 1);
   t.get_ith(ab, 0, w, r);
-  EXPECT_EQ("ABC", w);
+  EXPECT_EQ(i_abc, w);
   EXPECT_EQ(abc, r);
   t.get_ith(ab, 1, w, r);
-  EXPECT_EQ("ABC", w);
+  EXPECT_EQ(i_abc, w);
   EXPECT_EQ(abc, r);
   EXPECT_TRUE(t.get_ith(ab, 2, w, r));
-  EXPECT_EQ("ABD", w);
+  EXPECT_EQ(i_abd, w);
   EXPECT_EQ(abd, r);
   t.print(cout);
   EXPECT_EQ(3u, t.count_total(ab));
@@ -60,22 +60,22 @@ TEST(array_trie, trivial) {
   EXPECT_EQ(1u, t.count_total(abd));
 
 
-  t.insert(a, "A", 1);
+  t.insert(a, i_a, 1);
   t.print(cout);
   t.get_ith(a, 0, w, r);
-  EXPECT_EQ("A", w);
+  EXPECT_EQ(i_a, w);
   EXPECT_EQ(a, r);
 
   t.get_ith(a, 1, w, r);
-  EXPECT_EQ("ABC", w);
+  EXPECT_EQ(i_abc, w);
   EXPECT_EQ(abc, r);
 
   t.get_ith(a, 2, w, r);
-  EXPECT_EQ("ABC", w);
+  EXPECT_EQ(i_abc, w);
   EXPECT_EQ(abc, r);
 
   t.get_ith(a, 3, w, r);
-  EXPECT_EQ("ABD", w);
+  EXPECT_EQ(i_abd, w);
   EXPECT_EQ(abd, r);
 }
 

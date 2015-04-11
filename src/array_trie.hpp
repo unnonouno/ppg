@@ -2,7 +2,6 @@
 #define ARRAY_TRIE_HPP_406F0A9E_83CA_4242_B87F_DD7ACCB0E46C_
 
 #include <ostream>
-#include <string>
 #include <utility>
 #include <vector>
 
@@ -20,13 +19,13 @@ class ArrayTrie : public Trie {
   bool get_ith(
       const read_t& read,
       size_t i,
-      std::string& r_word,
+      id_t& r_word,
       read_t& r_read,
       bool ignore_empty = false) const;
 
   void insert(
       const read_t& read,
-      const std::string& str,
+      id_t str,
       unsigned n);
 
   void print(std::ostream& out) const;
@@ -37,7 +36,7 @@ class ArrayTrie : public Trie {
 
   struct Node {
     read_t read;
-    std::string str;
+    id_t str;
     unsigned count;
 
     friend class pfi::data::serialization::access;

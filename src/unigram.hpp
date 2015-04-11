@@ -2,7 +2,6 @@
 #define UNIGRAM_HPP_82B7E0C2_D813_479B_984C_8CBCA98BE973_
 
 #include <algorithm>
-#include <string>
 
 #include <pficommon/data/serialization.h>
 
@@ -16,9 +15,9 @@ class Unigram {
  public:
   Unigram();
 
-  void insert(const std::string& w, const read_t& r, unsigned count = 1);
+  void insert(id_t w, const read_t& r, unsigned count = 1);
 
-  bool sample(std::string& w, read_t& r) const;
+  bool sample(id_t& w, read_t& r) const;
 
   void swap(Unigram& unigram);
 

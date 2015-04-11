@@ -2,12 +2,10 @@
 
 #include <iostream>
 #include <utility>
-#include <string>
 
 #include "util.hpp"
 
 using std::pair;
-using std::string;
 
 namespace ppg {
 
@@ -15,7 +13,7 @@ bool
 ArrayTrie::get_ith(
     const read_t& read,
     size_t i,
-    string& r_word,
+    id_t& r_word,
     read_t& r_read,
     bool ignore_empty) const {
   read_t r;
@@ -63,7 +61,7 @@ ArrayTrie::get_ith(
 }
 
 void
-ArrayTrie::insert(const read_t& read, const string& str, unsigned n) {
+ArrayTrie::insert(const read_t& read, id_t str, unsigned n) {
   size_t pos = get_begin(read);
   if (pos >= data.size() || data[pos].str != str) {
     Node node;

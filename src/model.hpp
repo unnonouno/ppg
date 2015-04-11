@@ -8,6 +8,7 @@
 #include <pficommon/data/serialization.h>
 #include <pficommon/math/random.h>
 
+#include "dictionary.hpp"
 #include "fwd.hpp"
 #include "ngram.hpp"
 #include "unigram.hpp"
@@ -25,6 +26,7 @@ enum State {
 
 class Model {
  public:
+  void swap_dictionary(Dictionary& dictionary);
   void swap_unigram(Unigram& unigram);
   void swap_forward(Ngram& forward);
   void swap_backward(Ngram& backward);
@@ -36,7 +38,7 @@ class Model {
 
   template <class A>
   void serialize(A &a) {
-    a & forward & backward & unigram;
+    a & dictionary & forward & backward & unigram;
   }
 
   bool sample_next(
@@ -48,11 +50,12 @@ class Model {
       bool ignore_eos) const;
 
   bool sample_center(
-      std::string& r_center,
+      id_t& r_center,
       read_t& r_read,
       State& state,
       read_t& rest) const;
 
+  Dictionary dictionary;
   Ngram forward;
   Ngram backward;
   Unigram unigram;

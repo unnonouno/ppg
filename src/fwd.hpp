@@ -8,6 +8,7 @@ namespace ppg {
 
 typedef int16_t char_t;
 typedef std::vector<char_t> read_t;
+typedef uint32_t id_t;
 
 }  // namespace ppg
 

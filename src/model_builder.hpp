@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "fwd.hpp"
+#include "dictionary.hpp"
 
 namespace ppg {
 
@@ -32,9 +33,10 @@ class ModelBuilder {
   void swap(Model& model);
 
  private:
-  typedef std::map<std::pair<read_t, std::string>, unsigned> UnigramMap;
-  typedef std::map<std::string, UnigramMap> BigramMap;
+  typedef std::map<std::pair<read_t, id_t>, unsigned> UnigramMap;
+  typedef std::map<id_t, UnigramMap> BigramMap;
 
+  Dictionary dictionary;
   UnigramMap unigram_map;
   BigramMap forward_map;
   BigramMap backward_map;
