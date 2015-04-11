@@ -1,4 +1,5 @@
-#pragma once
+#ifndef READ_NORMALIZER_HPP_87CD4522_83F3_4CB8_8DA7_CC5AA171162E_
+#define READ_NORMALIZER_HPP_87CD4522_83F3_4CB8_8DA7_CC5AA171162E_
 
 #include <pficommon/data/string/ustring.h>
 #include <pficommon/data/unordered_map.h>
@@ -28,5 +29,6 @@ class ReadNormalizer {
   map_t normalize_map;
 };
 
-
 }
+
+#endif  // READ_NORMALIZER_HPP_87CD4522_83F3_4CB8_8DA7_CC5AA171162E_

@@ -1,8 +1,10 @@
-#include <gtest/gtest.h>
 #include <iostream>
+#include <sstream>
+
+#include <gtest/gtest.h>
+
 #include "hashtrie.hpp"
 #include "util.hpp"
-#include <sstream>
 
 namespace ppg {
 

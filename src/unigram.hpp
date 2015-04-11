@@ -1,11 +1,13 @@
-#pragma once
+#ifndef UNIGRAM_HPP_82B7E0C2_D813_479B_984C_8CBCA98BE973_
+#define UNIGRAM_HPP_82B7E0C2_D813_479B_984C_8CBCA98BE973_
 
-#include "fwd.hpp"
 #include <string>
 
 #include <pficommon/data/serialization.h>
-#include "trie_serialization.hpp"
+
+#include "fwd.hpp"
 #include "trie.hpp"
+#include "trie_serialization.hpp"
 
 namespace ppg {
 
@@ -31,3 +33,5 @@ class Unigram {
 };
 
 }
+
+#endif  // UNIGRAM_HPP_82B7E0C2_D813_479B_984C_8CBCA98BE973_

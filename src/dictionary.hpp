@@ -1,9 +1,12 @@
-#pragma once
+#ifndef DICTIONARY_HPP_5E25FCC3_50CF_45AB_89AC_7F4F43FFFFFC_
+#define DICTIONARY_HPP_5E25FCC3_50CF_45AB_89AC_7F4F43FFFFFC_
 
-#include "fwd.hpp"
 #include <vector>
+
 #include <pficommon/data/unordered_map.h>
 #include <pficommon/data/serialization.h>
+
+#include "fwd.hpp"
 
 namespace ppg {
 
@@ -31,3 +34,5 @@ private:
 };
 
 }
+
+#endif  // DICTIONARY_HPP_5E25FCC3_50CF_45AB_89AC_7F4F43FFFFFC_

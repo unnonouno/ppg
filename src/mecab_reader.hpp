@@ -1,6 +1,8 @@
-#pragma once
+#ifndef MECAB_READER_HPP_0CA94B61_5835_4425_9F64_06A3850E1AF6_
+#define MECAB_READER_HPP_0CA94B61_5835_4425_9F64_06A3850E1AF6_
 
 #include <istream>
+
 #include "read_manager.hpp"
 
 namespace ppg {
@@ -19,3 +21,5 @@ class MecabReader {
 };
 
 }
+
+#endif  // MECAB_READER_HPP_0CA94B61_5835_4425_9F64_06A3850E1AF6_

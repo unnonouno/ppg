@@ -1,11 +1,13 @@
-#pragma once
-
-#include "fwd.hpp"
+#ifndef MODEL_HPP_149C8476_F8CB_4A2D_9595_68423FC64A5B_
+#define MODEL_HPP_149C8476_F8CB_4A2D_9595_68423FC64A5B_
 
 #include <string>
+
 #include <pficommon/lang/shared_ptr.h>
 #include <pficommon/data/serialization.h>
 #include <pficommon/math/random.h>
+
+#include "fwd.hpp"
 #include "ngram.hpp"
 #include "unigram.hpp"
 #include "util.hpp"
@@ -55,3 +57,5 @@ private:
 };
 
 }
+
+#endif  // MODEL_HPP_149C8476_F8CB_4A2D_9595_68423FC64A5B_

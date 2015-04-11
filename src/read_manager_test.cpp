@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "ReadManager.hpp"
+#include "read_manager.hpp"
 
 using namespace std;
 using namespace pfi::data::string;

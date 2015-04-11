@@ -1,4 +1,4 @@
-#include "Dictionary.hpp"
+#include "dictionary.hpp"
 
 namespace ppg {
 

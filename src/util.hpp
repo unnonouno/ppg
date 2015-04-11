@@ -1,9 +1,11 @@
-#pragma once
+#ifndef UTIL_HPP_E5A9DB5E_9EA5_4429_8D51_EA1321AF736F_
+#define UTIL_HPP_E5A9DB5E_9EA5_4429_8D51_EA1321AF736F_
+
+#include <iostream>
+#include <string>
+#include <vector>
 
 #include "fwd.hpp"
-#include <vector>
-#include <string>
-#include <iostream>
 
 #define STR(s) \
   (sstream() << s).str()
@@ -34,3 +36,4 @@ std::ostream& operator << (std::ostream& out, const std::vector<T>& v) {
   return out;
 }
 
+#endif  // UTIL_HPP_E5A9DB5E_9EA5_4429_8D51_EA1321AF736F_

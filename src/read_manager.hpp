@@ -1,11 +1,13 @@
-#pragma once
+#ifndef READ_MANAGER_HPP_F244B187_B9DF_4A48_BEB3_4579F74FF7B3_
+#define READ_MANAGER_HPP_F244B187_B9DF_4A48_BEB3_4579F74FF7B3_
 
 #include <string>
-#include <pficommon/data/string/ustring.h>
-#include <pficommon/data/unordered_map.h>
+#include <vector>
+
 #include <pficommon/data/serialization.h>
 #include <pficommon/data/serialization/unordered_map.h>
-#include <vector>
+#include <pficommon/data/string/ustring.h>
+#include <pficommon/data/unordered_map.h>
 
 #include "fwd.hpp"
 #include "read_normalizer.hpp"
@@ -40,3 +42,5 @@ class ReadManager {
 };
 
 }
+
+#endif  // READ_MANAGER_HPP_F244B187_B9DF_4A48_BEB3_4579F74FF7B3_

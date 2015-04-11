@@ -1,12 +1,14 @@
-#pragma once
+#ifndef ARRAY_TRIE_HPP_406F0A9E_83CA_4242_B87F_DD7ACCB0E46C_
+#define ARRAY_TRIE_HPP_406F0A9E_83CA_4242_B87F_DD7ACCB0E46C_
 
-#include "fwd.hpp"
+#include <ostream>
 #include <string>
 #include <vector>
-#include <ostream>
+
 #include <pficommon/data/serialization.h>
 
-#include "Trie.hpp"
+#include "fwd.hpp"
+#include "trie.hpp"
 
 namespace ppg {
 
@@ -60,3 +62,5 @@ private:
 };
 
 }
+
+#endif  // ARRAY_TRIE_HPP_406F0A9E_83CA_4242_B87F_DD7ACCB0E46C_

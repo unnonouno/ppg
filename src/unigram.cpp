@@ -1,5 +1,5 @@
-#include "Unigram.hpp"
-#include "Trie.hpp"
+#include "unigram.hpp"
+#include "trie.hpp"
 
 namespace ppg {
 

@@ -1,10 +1,13 @@
-#pragma once
+#ifndef NGRAM_HPP_99986610_3FCF_4269_A29D_5A3168218D5D_
+#define NGRAM_HPP_99986610_3FCF_4269_A29D_5A3168218D5D_
+
+#include <string>
+
+#include <pficommon/data/serialization.h>
+#include <pficommon/lang/shared_ptr.h>
+#include <pficommon/data/unordered_map.h>
 
 #include "fwd.hpp"
-#include <string>
-#include <pficommon/lang/shared_ptr.h>
-#include <pficommon/data/serialization.h>
-#include <pficommon/data/unordered_map.h>
 #include "trie_serialization.hpp"
 
 namespace ppg {
@@ -38,3 +41,5 @@ class Ngram {
 };
 
 }
+
+#endif  // NGRAM_HPP_99986610_3FCF_4269_A29D_5A3168218D5D_

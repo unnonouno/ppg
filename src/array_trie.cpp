@@ -1,5 +1,7 @@
-#include <iostream>
 #include "array_trie.hpp"
+
+#include <iostream>
+
 #include "util.hpp"
 
 using namespace std;

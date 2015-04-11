@@ -1,5 +1,5 @@
-#include "Trie.hpp"
-#include "Random.hpp"
+#include "trie.hpp"
+#include "random.hpp"
 
 namespace ppg {
 

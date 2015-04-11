@@ -1,11 +1,11 @@
-#include "fwd.hpp"
-
 #include <string>
-#include "Ngram.hpp"
-#include "Util.hpp"
-#include "Random.hpp"
-#include "Sentence.hpp"
-#include "Model.hpp"
+
+#include "fwd.hpp"
+#include "ngram.hpp"
+#include "util.hpp"
+#include "random.hpp"
+#include "sentence.hpp"
+#include "model.hpp"
 
 namespace ppg {
 

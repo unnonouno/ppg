@@ -1,6 +1,8 @@
+#include "mecab_reader.hpp"
+
 #include <iostream>
 #include <vector>
-#include "mecab_reader.hpp"
+
 #include "sentence.hpp"
 
 using namespace std;

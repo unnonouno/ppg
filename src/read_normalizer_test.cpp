@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
 #include <pficommon/data/string/ustring.h>
-#include "ReadNormalizer.hpp"
+
+#include "read_normalizer.hpp"
 
 using namespace std;
 using namespace pfi::data::string;

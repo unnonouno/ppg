@@ -1,7 +1,9 @@
-#pragma once
+#ifndef TRIE_HPP_65CE80C5_8843_470A_8E44_B0752FBACC84_
+#define TRIE_HPP_65CE80C5_8843_470A_8E44_B0752FBACC84_
+
+#include <string>
 
 #include "fwd.hpp"
-#include <string>
 
 namespace ppg {
 
@@ -30,3 +32,5 @@ public:
 };
 
 }
+
+#endif  // TRIE_HPP_65CE80C5_8843_470A_8E44_B0752FBACC84_

@@ -1,8 +1,10 @@
-#pragma once
+#ifndef MODEL_BUILDER_HPP_4F6E0BFA_4905_413E_8ED2_0E8ACFD87B60_
+#define MODEL_BUILDER_HPP_4F6E0BFA_4905_413E_8ED2_0E8ACFD87B60_
+
+#include <map>
+#include <string>
 
 #include "fwd.hpp"
-#include <string>
-#include <map>
 
 namespace ppg {
 
@@ -33,5 +35,6 @@ class ModelBuilder {
 
 };
 
-
 }
+
+#endif  // MODEL_BUILDER_HPP_4F6E0BFA_4905_413E_8ED2_0E8ACFD87B60_

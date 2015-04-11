@@ -1,9 +1,10 @@
-#include <gtest/gtest.h>
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
-#include "ArrayTrie.hpp"
-#include "Util.hpp"
+#include <gtest/gtest.h>
+
+#include "array_trie.hpp"
+#include "util.hpp"
 
 namespace ppg {
 

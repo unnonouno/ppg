@@ -1,14 +1,17 @@
-#pragma once
+#ifndef HASH_TRIE_HPP_AF7AB88E_ECB6_4F95_AE99_C5939CFEFA70_
+#define HASH_TRIE_HPP_AF7AB88E_ECB6_4F95_AE99_C5939CFEFA70_
 
-#include <vector>
-#include <string>
 #include <iosfwd>
+#include <string>
+#include <vector>
+
 #include <pficommon/lang/shared_ptr.h>
 #include <pficommon/data/unordered_map.h>
 #include <pficommon/data/serialization.h>
+
 #include "fwd.hpp"
-#include "Trie.hpp"
-#include "Util.hpp"
+#include "trie.hpp"
+#include "util.hpp"
 
 namespace ppg {
 
@@ -118,4 +121,4 @@ void serialize(A &a, pfi::lang::shared_ptr<HashTrie::Node> &node) {
 
 }
 
-
+#endif  // HASH_TRIE_HPP_AF7AB88E_ECB6_4F95_AE99_C5939CFEFA70_

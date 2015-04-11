@@ -1,4 +1,5 @@
-#include "Random.hpp"
+#include "random.hpp"
+
 #include <pficommon/math/random.h>
 
 namespace ppg {

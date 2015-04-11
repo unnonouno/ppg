@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
-#include "random.hpp"
+
 #include "ngram.hpp"
+#include "random.hpp"
 
 namespace ppg {
 

@@ -1,4 +1,5 @@
 #include "model_builder.hpp"
+
 #include "model.hpp"
 #include "unigram.hpp"
 #include "ngram.hpp"
