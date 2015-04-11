@@ -7,9 +7,6 @@
 
 #include "fwd.hpp"
 
-#define STR(s) \
-  (sstream() << s).str()
-
 #define FOREACH(it, col)                                                \
   for (typeof(col.begin()) it = col.begin(); it != col.end(); ++it)
 
@@ -26,7 +23,7 @@ std::ostream& operator << (std::ostream& out, const std::vector<T>& v) {
   out << "[";
   FOREACH(x, v) {
     if (x != v.begin()) {
-      out << ';';
+      out << ", ";
     }
     out << *x;
   }

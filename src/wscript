@@ -37,12 +37,13 @@ def build(bld):
         )
 
     test_source = [
-            'array_trie_test.cpp',
-            'hash_trie_test.cpp',
-            'ngram_test.cpp',
-            'random_test.cpp',
-            'read_manager_test.cpp',
-            'read_normalizer_test.cpp',
+        'array_trie_test.cpp',
+        'hash_trie_test.cpp',
+        'ngram_test.cpp',
+        'random_test.cpp',
+        'read_manager_test.cpp',
+        'read_normalizer_test.cpp',
+        'util_test.cpp',
     ]
 
     for s in test_source:
