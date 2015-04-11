@@ -1,49 +1,49 @@
 def build(bld):
     bld.stlib(
-        source = [
-            'random.cpp',
-            'ngram.cpp',
-            'model.cpp',
-            'hash_trie.cpp',
-            'trie.cpp',
-            'util.cpp',
+        source=[
             'array_trie.cpp',
             'dictionary.cpp',
-            'unigram.cpp',
+            'hash_trie.cpp',
+            'mecab_reader.cpp',
+            'model.cpp',
             'model_builder.cpp',
+            'ngram.cpp',
+            'random.cpp',
             'read_manager.cpp',
             'read_normalizer.cpp',
-            'mecab_reader.cpp',
-            ],
-        target = 'ppg',
-        name = 'libppg',
-        includes = '.',
-        use = 'PFICOMMON'
-        )
+            'trie.cpp',
+            'unigram.cpp',
+            'util.cpp',
+        ],
+        target='ppgcore',
+        includes='.',
+        use='PFICOMMON'
+    )
 
     bld.program(
-        source = 'main.cpp',
-        target = 'ppg',
-        includes = '.',
-        use = 'libppg'
-        )
+        source='main.cpp',
+        target='ppg',
+        includes='.',
+        use='ppgcore'
+    )
 
     def make_test(source):
         bld.program(
-            features = 'gtest',
-            source = source,
-        target = source[0:source.find('.')],
-        includes = '.',
-        use = 'libppg'
+            features='gtest',
+            source=source,
+        target=source[0:source.find('.')],
+        includes='.',
+        use='ppgcore'
         )
 
     test_source = [
-            'random_test.cpp',
-            'ngram_test.cpp',
-            'hash_trie_test.cpp',
             'array_trie_test.cpp',
+            'hash_trie_test.cpp',
+            'ngram_test.cpp',
+            'random_test.cpp',
             'read_manager_test.cpp',
             'read_normalizer_test.cpp',
-            ]
+    ]
+
     for s in test_source:
         make_test(s)
