@@ -1,4 +1,3 @@
-#include <elog/elog.h>
 #include "HashTrie.hpp"
 #include "Util.hpp"
 #include <iostream>
@@ -15,7 +14,6 @@ const string HashTrie::not_found = "not found";
 size_t
 HashTrie::count_total(const vector<char_t>& read, bool ignore_empty) const {
   size_t total = iter_count(root, read, 0, 0);
-  LOG() << total;
   if (ignore_empty)
     total -= root.n_elements;
   return total;

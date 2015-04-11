@@ -5,7 +5,6 @@
 #include <pficommon/data/string/ustring.h>
 #include <pficommon/data/serialization.h>
 #include <pficommon/text/json.h>
-#include <elog/elog.h>
 
 #include "fwd.hpp"
 #include "Model.hpp"
@@ -125,7 +124,7 @@ int main(int argc, char* argv[]) {
 
   p.parse_check(argc, argv);
 
-  LOG::SetDefaultLoggerLevel(LOG::ERROR);
+  //LOG::SetDefaultLoggerLevel(LOG::ERROR);
 
   if (p.exist("make")) {
     make_model(p.get<string>("model"));

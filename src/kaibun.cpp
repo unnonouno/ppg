@@ -1,7 +1,6 @@
 #include "fwd.hpp"
 
 #include <string>
-#include <elog/elog.h>
 #include "Ngram.hpp"
 #include "Util.hpp"
 #include "Random.hpp"
@@ -50,7 +49,7 @@ bool Model::sample_next(bool go_right,
                         ) const {
   const vector<Word>& h = go_right ? right : left;
   const string& history = h[h.size() - 1].str;
-  LOG() << "kaibun::sample_next:  history: " << history << " read: " << read;
+  //LOG() << "kaibun::sample_next:  history: " << history << " read: " << read;
 
   const unsigned len = read.size();
   const Ngram& ngram = go_right ? forward : backward;
@@ -59,7 +58,7 @@ bool Model::sample_next(bool go_right,
   read_t r_read;
   if (!ngram.sample(history, read, r, r_read, ignore_eos))
     return false;
-  LOG() << r << r_read;
+  //LOG() << r << r_read;
   const unsigned res_len = r_read.size();
   if (len == res_len) {
     state = BALANCE;
@@ -74,7 +73,7 @@ bool Model::sample_next(bool go_right,
     state = go_right ? RIGHT : LEFT;
     read.erase(read.begin(), read.begin() + res_len);
   }
-  LOG() << read;
+  //LOG() << read;
 
   if (go_right) {
     right.push_back(Word(r, r_read));
@@ -136,12 +135,12 @@ bool Model::try_make(Sentence& ret) const {
   string center;
   read_t center_read;
   
-  LOG() << "start";
+  //LOG() << "start";
   //unigram.sample(read_t(), center, read);
   if (!sample_center(center, center_read, state, read))
     return false;
 
-  LOG() << "center: " << center << " " << state << " " << center_read;
+  //LOG() << "center: " << center << " " << state << " " << center_read;
 
   right.push_back(Word(center, center_read));
   left.push_back(Word(center, center_read));

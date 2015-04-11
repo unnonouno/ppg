@@ -34,14 +34,14 @@ public:
 
   void print(std::ostream& out) const;
 
+  struct Node;
+
 private:
   friend class pfi::data::serialization::access;
   template <class A>
   void serialize(A &a) {
     a & root;
   }
-
-  struct Node;
 
   static const std::string not_found;
 
@@ -59,7 +59,7 @@ private:
            std::string& r_word,
            read_t& r_read) const;
 
-
+ public:
   struct Node {
     typedef pfi::data::unordered_map<char_t, pfi::lang::shared_ptr<Node> > child_t;
 

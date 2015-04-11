@@ -9,15 +9,6 @@
 
 namespace ppg {
 
-template <class A>
-void serialize(A &a, pfi::lang::shared_ptr<Trie> &trie){
-  if (a.is_read) {
-    trie = load_trie(a);
-  } else {
-    save_trie(a, *trie);
-  }
-}
-
 template <class A, class T>
 pfi::lang::shared_ptr<Trie> load_as(A& a) {
   pfi::lang::shared_ptr<Trie> ptr(new T());
@@ -35,6 +26,15 @@ pfi::lang::shared_ptr<Trie> load_trie(A& a) {
     return load_as<A, HashTrie>(a);
   } else {
     throw std::runtime_error("unknown type; " + type);
+  }
+}
+
+template <class A>
+void serialize(A &a, pfi::lang::shared_ptr<Trie> &trie){
+  if (a.is_read) {
+    trie = load_trie(a);
+  } else {
+    save_trie(a, *trie);
   }
 }
 

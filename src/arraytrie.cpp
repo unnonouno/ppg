@@ -1,5 +1,4 @@
 #include <iostream>
-#include <elog/elog.h>
 #include "ArrayTrie.hpp"
 #include "Util.hpp"
 
@@ -38,8 +37,8 @@ ArrayTrie::get_ith(const read_t& read,
   size_t end = range.second;
   unsigned offset = get_offset(begin);
   unsigned goal = offset + i;
-  LOG() << "(" << begin << ", " << end << ")";
-  LOG() << "off(" << get_offset(begin) << ", " << get_offset(end) << ")";
+  //LOG() << "(" << begin << ", " << end << ")";
+  //LOG() << "off(" << get_offset(begin) << ", " << get_offset(end) << ")";
   
   if (!(goal < get_offset(end)))
     return false;

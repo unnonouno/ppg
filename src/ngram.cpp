@@ -1,5 +1,3 @@
-#include <elog/elog.h>
-
 #include "Ngram.hpp"
 #include "Util.hpp"
 #include "HashTrie.hpp"
@@ -18,17 +16,18 @@ bool Ngram::sample(const string& str, const read_t& label,
                    string& r_word, read_t& r_read, bool ignore_eos) const
 {
   int id = Dictionary::inst().id_of_string(str);
-  LOG() << "sample: " << str << " id: " << id;
+  //LOG() << "sample: " << str << " id: " << id;
   table_t::const_iterator p = table.find(id);
   if (p == table.end())
     return false;
   
   bool r = p->second->sample(label, r_word, r_read, ignore_eos);
   if (r)
-    LOG() << "ngram::sample hist:" << str << " word:" << r_word << " read:" <<
+    //LOG() << "ngram::sample hist:" << str << " word:" << r_word << " read:" <<
         read_to_str(r_read);
   else
-    LOG() << "ngram::sample fail";
+    //LOG() << "ngram::sample fail";
+    ;
   return r;
 }
 
