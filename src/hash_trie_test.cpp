@@ -7,6 +7,7 @@
 #include "hash_trie.hpp"
 #include "util.hpp"
 
+using std::cout;
 using std::string;
 
 namespace ppg {

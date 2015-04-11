@@ -3,6 +3,7 @@
 #include "read_manager.hpp"
 
 using pfi::data::string::ustring;
+using pfi::data::string::string_to_ustring;
 
 namespace ppg {
 

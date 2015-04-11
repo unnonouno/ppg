@@ -7,6 +7,7 @@
 #include "array_trie.hpp"
 #include "util.hpp"
 
+using std::cout;
 using std::string;
 
 namespace ppg {
@@ -18,7 +19,7 @@ bool operator ==(const read_t& r1, const read_t& r2) {
 }
 
 TEST(array_trie, trivial) {
-  cerr << "array trie"  << endl;
+  std::cerr << "array trie"  << std::endl;
   ArrayTrie t;
   read_t abc = str_to_read("ABC");
   read_t ab = str_to_read("AB");
