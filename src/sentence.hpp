@@ -16,6 +16,14 @@ struct Word {
       : str(s), read(r) {}
 };
 
+struct WordId {
+  id_t str;
+  read_t read;
+
+  WordId(id_t s, const read_t& r)
+      : str(s), read(r) {}
+};
+
 struct Sentence {
   std::vector<Word> words;
 };

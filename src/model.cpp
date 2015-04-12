@@ -62,27 +62,14 @@ void make_left_candidates(
   }
 }
 
-void make_sentence(
-    const std::vector<Word>& left,
-    const std::vector<Word>& right,
-    Sentence& sentence) {
-  std::vector<Word> ws(left.rbegin(), left.rend());
-  if (!right.empty()) {
-    ws.insert(ws.end(), right.begin() + 1, right.end());
-  }
-  ws.swap(sentence.words);
-}
-
 }  // namespace
 
 bool Model::sample_next(
     bool go_right,
     SearchState& state,
     bool ignore_eos) const {
-  const vector<Word>& h = go_right ? state.right : state.left;
-  const string& history = h[h.size() - 1].str;
-  id_t history_id = dictionary.id_of_string(history);
-  // LOG() << "kaibun::sample_next:  history: " << history << " read: " << read;
+  const vector<WordId>& h = go_right ? state.right : state.left;
+  id_t history_id = h[h.size() - 1].str;
 
   const unsigned len = state.read.size();
   const Ngram& ngram = go_right ? forward : backward;
@@ -105,12 +92,11 @@ bool Model::sample_next(
     state.read.erase(state.read.begin(), state.read.begin() + res_len);
   }
 
-  std::string rword = dictionary.string_of_id(r);
   if (go_right) {
-    state.right.push_back(Word(rword, r_read));
+    state.right.push_back(WordId(r, r_read));
   } else {
     read_t rev(r_read.rbegin(), r_read.rend());
-    state.left.push_back(Word(rword, rev));
+    state.left.push_back(WordId(r, rev));
   }
 
   return true;
@@ -135,12 +121,11 @@ bool Model::sample_center(SearchState& state) const {
     return false;
   }
 
-  std::string center = dictionary.string_of_id(center_id);
   unsigned id = random_int(cands.size());
   state.state = cands[id].first;
   state.read = cands[id].second;
-  state.right.push_back(Word(center, center_read));
-  state.left.push_back(Word(center, center_read));
+  state.right.push_back(WordId(center_id, center_read));
+  state.left.push_back(WordId(center_id, center_read));
 
   return true;
 }
@@ -199,6 +184,26 @@ bool Model::try_make(Sentence& ret) const {
         break;
     }
   }
+}
+
+Word Model::make_word(const WordId& w) const {
+  return Word(dictionary.string_of_id(w.str), w.read);
+}
+
+void Model::make_sentence(
+    const std::vector<WordId>& left,
+    const std::vector<WordId>& right,
+    Sentence& sentence) const {
+  std::vector<Word> ws;
+  for (int i = left.size() - 1; i >= 0; --i) {
+    ws.push_back(make_word(left[i]));
+  }
+  if (!right.empty()) {
+    for (size_t i = 1; i < right.size(); ++i) {
+      ws.push_back(make_word(right[i]));
+    }
+  }
+  ws.swap(sentence.words);
 }
 
 void Model::swap_dictionary(Dictionary& dictionary) {

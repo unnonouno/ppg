@@ -11,14 +11,13 @@
 #include "dictionary.hpp"
 #include "fwd.hpp"
 #include "ngram.hpp"
+#include "sentence.hpp"
 #include "unigram.hpp"
 #include "util.hpp"
 
 namespace ppg {
 
 class Ngram;
-struct Word;
-struct Sentence;
 
 enum State {
   BALANCE, RIGHT, LEFT
@@ -36,8 +35,8 @@ class Model {
  private:
   struct SearchState {
     read_t read;
-    std::vector<Word> right;
-    std::vector<Word> left;
+    std::vector<WordId> right;
+    std::vector<WordId> left;
     State state;
   };
 
@@ -58,6 +57,13 @@ class Model {
       bool ignore_eos) const;
 
   bool sample_center(SearchState& state) const;
+
+  Word make_word(const WordId& w) const;
+
+  void make_sentence(
+    const std::vector<WordId>& left,
+    const std::vector<WordId>& right,
+    Sentence& sentence) const;
 
   Dictionary dictionary;
   Ngram forward;
