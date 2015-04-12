@@ -34,6 +34,13 @@ class Model {
   bool try_make(Sentence& sentence) const;
 
  private:
+  struct SearchState {
+    read_t read;
+    std::vector<Word> right;
+    std::vector<Word> left;
+    State state;
+  };
+
   friend class pfi::data::serialization::access;
 
   template <class Ar>
@@ -47,17 +54,10 @@ class Model {
 
   bool sample_next(
       bool go_right,
-      read_t& read,
-      std::vector<Word>& right,
-      std::vector<Word>& left,
-      State& state,
+      SearchState& state,
       bool ignore_eos) const;
 
-  bool sample_center(
-      id_t& r_center,
-      read_t& r_read,
-      State& state,
-      read_t& rest) const;
+  bool sample_center(SearchState& state) const;
 
   Dictionary dictionary;
   Ngram forward;

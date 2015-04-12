@@ -18,152 +18,155 @@ using std::vector;
 namespace ppg {
 namespace  {
 
-bool is_parindrome(
-    const read_t& read,
-    const int l,
-    const int r) {
-  for (int il = l, ir = r; il < ir; il++, ir--) {
-    if (read[il] != read[ir])
+bool is_parindrome(const read_t& read, int l, int r) {
+  for (int il = l, ir = r; il < ir; ++il, --ir) {
+    if (read[il] != read[ir]) {
       return false;
+    }
   }
   return true;
+}
+
+void make_right_candidates(
+    const read_t& center_read,
+    vector<pair<State, read_t> >& cands) {
+  int len = static_cast<int>(center_read.size());
+  for (int i = 1; i <= len - 1; ++i) {
+    // 0, 1, .., i-1 [i, .., len-1]
+    if (!is_parindrome(center_read, i, len - 1)) {
+      continue;
+    }
+    read_t rst;
+    for (int j = i - 1; j >= 0; --j) {
+      rst.push_back(center_read[j]);
+    }
+    cands.push_back(make_pair(RIGHT, rst));
+  }
+}
+
+void make_left_candidates(
+    const read_t& center_read,
+    vector<pair<State, read_t> >& cands) {
+  int len = static_cast<int>(center_read.size());
+  for (int i = 0; i < len - 1; ++i) {
+    // [0, 1, .., i], i+1, .., len-1
+    if (!is_parindrome(center_read, 0, i)) {
+      continue;
+    }
+
+    read_t rst;
+    for (int j = i + 1; j < len; ++j) {
+      rst.push_back(center_read[j]);
+    }
+    cands.push_back(make_pair(LEFT, rst));
+  }
 }
 
 }  // namespace
 
 bool Model::sample_next(
     bool go_right,
-    read_t& read,
-    vector<Word>& right,
-    vector<Word>& left,
-    State& state,
+    SearchState& state,
     bool ignore_eos) const {
-  const vector<Word>& h = go_right ? right : left;
+  const vector<Word>& h = go_right ? state.right : state.left;
   const string& history = h[h.size() - 1].str;
   id_t history_id = dictionary.id_of_string(history);
   // LOG() << "kaibun::sample_next:  history: " << history << " read: " << read;
 
-  const unsigned len = read.size();
+  const unsigned len = state.read.size();
   const Ngram& ngram = go_right ? forward : backward;
 
   id_t r;
   read_t r_read;
-  if (!ngram.sample(history_id, read, r, r_read, ignore_eos)) {
+  if (!ngram.sample(history_id, state.read, r, r_read, ignore_eos)) {
     return false;
   }
-  // LOG() << r << r_read;
+
   const unsigned res_len = r_read.size();
   if (len == res_len) {
-    state = BALANCE;
-    read.clear();
+    state.state = BALANCE;
+    state.read.clear();
   } else if (len < res_len) {
-    state = go_right ? LEFT : RIGHT;
-    read.clear();
-    for (unsigned i = len; i < res_len; i++)
-      read.push_back(r_read[i]);
+    state.state = go_right ? LEFT : RIGHT;
+    state.read.clear();
+    for (unsigned i = len; i < res_len; i++) {
+      state.read.push_back(r_read[i]);
+    }
   } else {
-    state = go_right ? RIGHT : LEFT;
-    read.erase(read.begin(), read.begin() + res_len);
+    state.state = go_right ? RIGHT : LEFT;
+    state.read.erase(state.read.begin(), state.read.begin() + res_len);
   }
-  // LOG() << read;
 
   std::string rword = dictionary.string_of_id(r);
   if (go_right) {
-    right.push_back(Word(rword, r_read));
+    state.right.push_back(Word(rword, r_read));
   } else {
     read_t rev(r_read.rbegin(), r_read.rend());
-    left.push_back(Word(rword, rev));
+    state.left.push_back(Word(rword, rev));
   }
 
   return true;
 }
 
-bool Model::sample_center(
-    id_t& r_center,
-    read_t& r_read,
-    State& state,
-    read_t& rest) const {
-  if (!unigram.sample(r_center, r_read))
-    return false;
+bool Model::sample_center(SearchState& state) const {
+  id_t center_id;
+  read_t center_read;
 
-  const int len = static_cast<int>(r_read.size());
+  if (!unigram.sample(center_id, center_read)) {
+    return false;
+  }
+
   vector<pair<State, read_t> > cands;
-
-  for (int i = 0; i <= len; i++) {
-    if (!is_parindrome(r_read, i, len - 1))
-      continue;
-    State s = RIGHT;
-    read_t rst;
-    for (int j = i - 1; j >= 0; j--)
-      rst.push_back(r_read[j]);
-    if (i == 0)
-      s = BALANCE;
-    cands.push_back(make_pair(s, rst));
+  if (is_parindrome(center_read, 0, center_read.size() - 1)) {
+    cands.push_back(make_pair(BALANCE, read_t()));
   }
+  make_right_candidates(center_read, cands);
+  make_left_candidates(center_read, cands);
 
-  for (int i = 1; i <= len; i++) {
-    if (!is_parindrome(r_read, 0, len - i - 1))
-      continue;
-
-    State s = LEFT;
-    read_t rst;
-    for (int j = len - i; j < len; j++)
-      rst.push_back(r_read[j]);
-    cands.push_back(make_pair(s, rst));
-  }
-  if (cands.empty())
+  if (cands.empty()) {
     return false;
-  // FOREACH (c, cands)
-  // LOG(DEBUG, c->first << " " << read_to_str(c->second));
+  }
+
+  std::string center = dictionary.string_of_id(center_id);
   unsigned id = random_int(cands.size());
-  state = cands[id].first;
-  rest = cands[id].second;
+  state.state = cands[id].first;
+  state.read = cands[id].second;
+  state.right.push_back(Word(center, center_read));
+  state.left.push_back(Word(center, center_read));
+
   return true;
 }
 
 bool Model::try_make(Sentence& ret) const {
-  vector<Word> right, left;
-  State state = BALANCE;
-  read_t read;
+  SearchState state;
 
-  id_t center_id;
-  read_t center_read;
-
-  // LOG() << "start";
-  // unigram.sample(read_t(), center, read);
-  if (!sample_center(center_id, center_read, state, read))
+  if (!sample_center(state)) {
     return false;
+  }
 
   // LOG() << "center: " << center << " " << state << " " << center_read;
 
-  std::string center = dictionary.string_of_id(center_id);
-  right.push_back(Word(center, center_read));
-  left.push_back(Word(center, center_read));
-
   int depth = 0;
-
   while (true) {
     depth++;
     if (depth == 30)
       return false;
     // LOG(DEBUG, state << ' ' << read_to_str(read));
-    switch (state) {
+    switch (state.state) {
       case BALANCE: {
-        if (!sample_next(true,
-                         read, right, left, state, depth < 10))
+        if (!sample_next(true, state, depth < 10))
           return false;
-        if (state == BALANCE) {
-          if (!sample_next(false,
-                           read, right, left, state, depth < 10))
+        if (state.state == BALANCE) {
+          if (!sample_next(false, state, depth < 10))
             return false;
-          if (state == BALANCE) {
+          if (state.state == BALANCE) {
             // success
-            FOREACH_REV(p, left) {
+            FOREACH_REV(p, state.left) {
               ret.words.push_back(*p);
             }
-            FOREACH(p, right) {
+            FOREACH(p, state.right) {
               // skip the first pair
-              if (p != right.begin()) {
+              if (p != state.right.begin()) {
                 ret.words.push_back(*p);
               }
             }
@@ -182,13 +185,12 @@ bool Model::try_make(Sentence& ret) const {
           if (r == 0)
           return false;
         */
-        if (!sample_next(state == RIGHT,
-                         read, right, left, state, true))
+        if (!sample_next(state.state == RIGHT, state, true))
           return false;
 
-        bool eos = (state == RIGHT ?
-                    right.back().read.empty() :
-                    left.back().read.empty());
+        bool eos = (state.state == RIGHT ?
+                    state.right.back().read.empty() :
+                    state.left.back().read.empty());
         if (eos)
           // eos was sampled
           return false;
