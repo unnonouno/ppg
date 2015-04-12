@@ -30,9 +30,13 @@ class ReadManager {
 
  private:
   friend class pfi::data::serialization::access;
-  template <class A>
-  void serialize(A &a) {
-    a & uchar_to_id & uchars & normalize_map & normalizer;
+  template <class Ar>
+  void serialize(Ar& ar) {
+    ar
+        & MEMBER(uchar_to_id)
+        & MEMBER(uchars)
+        & MEMBER(normalize_map)
+        & MEMBER(normalizer);
   }
 
   pfi::data::unordered_map<pfi::data::string::uchar, char_t> uchar_to_id;

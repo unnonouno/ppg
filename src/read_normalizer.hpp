@@ -15,13 +15,13 @@ class ReadNormalizer {
 
   ReadNormalizer();
 
-  uchar_t normalizeChar(uchar_t ch) const;
+  uchar_t normalizeChar(pfi::data::string::uchar ch) const;
 
  private:
   friend class pfi::data::serialization::access;
-  template <class A>
-  void serialize(A &a) {
-    a & normalize_map;
+  template <class Ar>
+  void serialize(Ar& ar) {
+    ar & MEMBER(normalize_map);
   }
 
   typedef pfi::data::unordered_map<uchar_t, uchar_t> map_t;

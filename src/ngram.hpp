@@ -31,9 +31,9 @@ class Ngram {
 
  private:
   friend class pfi::data::serialization::access;
-  template <class A>
-  void serialize(A &a) {
-    a & table;
+  template <class Ar>
+  void serialize(Ar& ar) {
+    ar & MEMBER(table);
   }
 
   typedef pfi::data::unordered_map<int, pfi::lang::shared_ptr<Trie> > table_t;

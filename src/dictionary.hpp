@@ -20,9 +20,11 @@ class Dictionary {
  private:
   friend class pfi::data::serialization::access;
 
-  template <class A>
-  void serialize(A &a) {
-    a & id_to_str & str_to_id;
+  template <class Ar>
+  void serialize(Ar &ar) {
+    ar
+        & MEMBER(id_to_str)
+        & MEMBER(str_to_id);
   }
 
   mutable std::vector<std::string> id_to_str;

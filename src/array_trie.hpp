@@ -40,17 +40,17 @@ class ArrayTrie : public Trie {
     unsigned count;
 
     friend class pfi::data::serialization::access;
-    template <class A>
-    void serialize(A &a) {
-      a & read & str & count;
+    template <class Ar>
+    void serialize(Ar& ar) {
+      ar & MEMBER(read) & MEMBER(str) & MEMBER(count);
     }
   };
 
  private:
   friend class pfi::data::serialization::access;
-  template <class A>
-  void serialize(A &a) {
-    a & data;
+  template <class Ar>
+  void serialize(Ar& ar) {
+    ar & MEMBER(data);
   }
 
   std::pair<size_t, size_t> get_range(const read_t& read) const;

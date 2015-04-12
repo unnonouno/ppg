@@ -24,9 +24,9 @@ class Unigram {
  private:
   friend class pfi::data::serialization::access;
 
-  template <class A>
-  void serialize(A &a) {
-    a & trie;
+  template <class Ar>
+  void serialize(Ar& ar) {
+    ar & MEMBER(trie);
   }
 
   pfi::lang::shared_ptr<Trie> trie;

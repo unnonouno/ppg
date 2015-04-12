@@ -12,50 +12,52 @@
 
 namespace ppg {
 
-template <class A, class T>
-pfi::lang::shared_ptr<Trie> load_as(A& a) {
+template <class Ar, class T>
+pfi::lang::shared_ptr<Trie> load_as(Ar& ar) {
   pfi::lang::shared_ptr<Trie> ptr(new T());
-  a & dynamic_cast<T&>(*ptr);
+  ar & dynamic_cast<T&>(*ptr);
   return ptr;
 }
 
-template <class A>
-pfi::lang::shared_ptr<Trie> load_trie(A& a) {
+template <class Ar>
+pfi::lang::shared_ptr<Trie> load_trie(Ar& ar) {
   std::string type;
-  a & type;
+  ar & type;
   if (type == "ArrayTrie") {
-    return load_as<A, ArrayTrie>(a);
+    return load_as<Ar, ArrayTrie>(ar);
   } else if (type == "HashTrie") {
-    return load_as<A, HashTrie>(a);
+    return load_as<Ar, HashTrie>(ar);
   } else {
     throw std::runtime_error("unknown type; " + type);
   }
 }
 
-template <class A>
-void serialize(A &a, pfi::lang::shared_ptr<Trie> &trie) {
-  if (a.is_read) {
-    trie = load_trie(a);
+template <class Ar>
+void serialize(Ar& ar, pfi::lang::shared_ptr<Trie> &trie) {
+  if (ar.is_read) {
+    trie = load_trie(ar);
   } else {
-    save_trie(a, *trie);
+    save_trie(ar, *trie);
   }
 }
 
-template <class A, class T>
-bool try_save(A& a, Trie& trie, const std::string& type) {
+template <class Ar, class T>
+bool try_save(Ar& ar, Trie& trie, const std::string& type) {
   if (typeid(trie) == typeid(T)) {
     std::string name(type);
-    a & name
+    ar
+        & name
         & dynamic_cast<T&>(trie);
     return true;
   } else {
     return false;
   }
 }
-template <class A>
-void save_trie(A& a, Trie& trie) {
-  if (try_save<A, ArrayTrie>(a, trie, "ArrayTrie")) {
-  } else if (try_save<A, HashTrie>(a, trie, "HashTrie")) {
+
+template <class Ar>
+void save_trie(Ar& ar, Trie& trie) {
+  if (try_save<Ar, ArrayTrie>(ar, trie, "ArrayTrie")) {
+  } else if (try_save<Ar, HashTrie>(ar, trie, "HashTrie")) {
   } else {
     throw std::runtime_error(std::string("unknown type: ")
                              + typeid(trie).name());

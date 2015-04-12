@@ -43,9 +43,9 @@ class HashTrie : public Trie {
 
  private:
   friend class pfi::data::serialization::access;
-  template <class A>
-  void serialize(A &a) {
-    a & root;
+  template <class Ar>
+  void serialize(Ar& ar) {
+    ar & MEMBER(root);
   }
 
   size_t
@@ -101,27 +101,32 @@ class HashTrie : public Trie {
     child_t children;
 
     friend class pfi::data::serialization::access;
-    template <class A>
-    void serialize(A &a) {
-      a & n_elements & n_children & elements & children;
+    template <class Ar>
+    void serialize(Ar& ar) {
+      ar
+          & MEMBER(n_elements)
+          & MEMBER(n_children)
+          & MEMBER(elements)
+          & MEMBER(children);
     }
   } root;
 };
 
-template <class A>
-void serialize(A &a, pfi::lang::shared_ptr<HashTrie::Node> &node) {
+template <class Ar>
+void serialize(Ar& ar, pfi::lang::shared_ptr<HashTrie::Node>& node) {
   bool not_null = false;
-  if (a.is_read) {
-    a & not_null;
-    if (not_null)
-      a & *node;
+  if (ar.is_read) {
+    ar & not_null;
+    if (not_null) {
+      ar & *node;
+    }
   } else {
     if (node) {
       not_null = true;
-      a & not_null;
-      a & *node;
+      ar & not_null;
+      ar & *node;
     } else {
-      a & not_null;
+      ar & not_null;
     }
   }
 }

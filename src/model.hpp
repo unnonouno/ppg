@@ -36,9 +36,13 @@ class Model {
  private:
   friend class pfi::data::serialization::access;
 
-  template <class A>
-  void serialize(A &a) {
-    a & dictionary & forward & backward & unigram;
+  template <class Ar>
+  void serialize(Ar& ar) {
+    ar
+        & MEMBER(dictionary)
+        & MEMBER(forward)
+        & MEMBER(backward)
+        & MEMBER(unigram);
   }
 
   bool sample_next(
