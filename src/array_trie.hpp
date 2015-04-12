@@ -53,6 +53,7 @@ class ArrayTrie : public Trie {
 
   std::pair<size_t, size_t> get_range(const read_t& read) const;
 
+  size_t get_begin(const read_t& read, id_t str) const;
   size_t get_begin(const read_t& read) const;
 
   unsigned get_count(size_t pos) const;

@@ -79,4 +79,23 @@ TEST(array_trie, trivial) {
   EXPECT_EQ(abd, r);
 }
 
+TEST(ArrayTrie, same_read) {
+  ArrayTrie t;
+  read_t read;
+  read.push_back(1);
+  t.insert(read, 1, 1);
+  t.insert(read, 2, 1);
+  t.insert(read, 1, 1);
+
+  ASSERT_EQ(3u, t.count_total(read, false));
+  id_t w;
+  read_t r;
+  t.get_ith(read, 0, w, r, false);
+  ASSERT_EQ(1u, w);
+  t.get_ith(read, 1, w, r, false);
+  ASSERT_EQ(1u, w);
+  t.get_ith(read, 2, w, r, false);
+  ASSERT_EQ(2u, w);
+}
+
 }  // namespace ppg

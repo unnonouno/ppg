@@ -64,8 +64,8 @@ ArrayTrie::get_ith(
 void
 ArrayTrie::insert(const read_t& read, id_t str, unsigned n) {
   // Note that this code requires O(n) time
-  size_t pos = get_begin(read);
-  if (pos >= data.size() || data[pos].str != str) {
+  size_t pos = get_begin(read, str);
+  if (pos >= data.size() || data[pos].str != str || data[pos].read != read) {
     Node node;
     node.read = read;
     node.str = str;
@@ -151,10 +151,17 @@ ArrayTrie::get_range(const read_t& read) const {
 
 size_t
 ArrayTrie::get_begin(const read_t& read) const {
+  return get_begin(read, 0);
+}
+
+size_t
+ArrayTrie::get_begin(const read_t& read, id_t str) const {
   size_t begin = 0, end = data.size();
   while (end - begin > 0) {
     size_t index = (begin + end) / 2;
-    if (data[index].read < read) {
+    const Node& node = data[index];
+    if (node.read < read
+        || (node.read == read && node.str < str)) {
       begin = index + 1;
     } else {
       end = index;
