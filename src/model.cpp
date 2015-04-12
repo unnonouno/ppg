@@ -62,6 +62,17 @@ void make_left_candidates(
   }
 }
 
+void make_sentence(
+    const std::vector<Word>& left,
+    const std::vector<Word>& right,
+    Sentence& sentence) {
+  std::vector<Word> ws(left.rbegin(), left.rend());
+  if (!right.empty()) {
+    ws.insert(ws.end(), right.begin() + 1, right.end());
+  }
+  ws.swap(sentence.words);
+}
+
 }  // namespace
 
 bool Model::sample_next(
@@ -88,10 +99,7 @@ bool Model::sample_next(
     state.read.clear();
   } else if (len < res_len) {
     state.state = go_right ? LEFT : RIGHT;
-    state.read.clear();
-    for (unsigned i = len; i < res_len; i++) {
-      state.read.push_back(r_read[i]);
-    }
+    read_t(r_read.begin() + len, r_read.end()).swap(state.read);
   } else {
     state.state = go_right ? RIGHT : LEFT;
     state.read.erase(state.read.begin(), state.read.begin() + res_len);
@@ -154,22 +162,15 @@ bool Model::try_make(Sentence& ret) const {
     // LOG(DEBUG, state << ' ' << read_to_str(read));
     switch (state.state) {
       case BALANCE: {
-        if (!sample_next(true, state, depth < 10))
+        if (!sample_next(true, state, depth < 10)) {
           return false;
+        }
         if (state.state == BALANCE) {
-          if (!sample_next(false, state, depth < 10))
+          if (!sample_next(false, state, depth < 10)) {
             return false;
+          }
           if (state.state == BALANCE) {
-            // success
-            FOREACH_REV(p, state.left) {
-              ret.words.push_back(*p);
-            }
-            FOREACH(p, state.right) {
-              // skip the first pair
-              if (p != state.right.begin()) {
-                ret.words.push_back(*p);
-              }
-            }
+            make_sentence(state.left, state.right, ret);
             return true;
           } else {
             // eos was not sampled
@@ -177,7 +178,7 @@ bool Model::try_make(Sentence& ret) const {
           }
         }
       }
-      break;
+        break;
 
       case RIGHT: case LEFT: {
         /*
@@ -185,15 +186,15 @@ bool Model::try_make(Sentence& ret) const {
           if (r == 0)
           return false;
         */
-        if (!sample_next(state.state == RIGHT, state, true))
+        if (!sample_next(state.state == RIGHT, state, true)) {
           return false;
+        }
 
-        bool eos = (state.state == RIGHT ?
-                    state.right.back().read.empty() :
-                    state.left.back().read.empty());
-        if (eos)
+        if ((state.state == RIGHT && state.right.back().read.empty()) ||
+            (state.state == LEFT && state.left.back().read.empty())) {
           // eos was sampled
           return false;
+        }
       }
         break;
     }
