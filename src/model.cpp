@@ -16,12 +16,7 @@ using std::string;
 using std::vector;
 
 namespace ppg {
-
-static State op[] = { BALANCE, LEFT, RIGHT };
-
-State opposite(State s) {
-  return op[s];
-}
+namespace  {
 
 bool is_parindrome(
     const read_t& read,
@@ -33,6 +28,8 @@ bool is_parindrome(
   }
   return true;
 }
+
+}  // namespace
 
 bool Model::sample_next(
     bool go_right,
@@ -60,7 +57,6 @@ bool Model::sample_next(
     state = BALANCE;
     read.clear();
   } else if (len < res_len) {
-    // state = opposite(state);
     state = go_right ? LEFT : RIGHT;
     read.clear();
     for (unsigned i = len; i < res_len; i++)
