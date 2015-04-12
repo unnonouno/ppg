@@ -19,8 +19,9 @@ ArrayTrie::get_ith(
   read_t r;
   FOREACH(c, read) {
     size_t pos = get_begin(r);
-    if (pos < data.size() &&
-        !(c == read.begin() && ignore_empty) && data[pos].read == r) {
+    if (pos < data.size()
+        && !(r.empty() && ignore_empty)
+        && data[pos].read == r) {
       if (i < get_count(pos)) {
         r_word = data[pos].str;
         r_read = data[pos].read;
@@ -33,16 +34,16 @@ ArrayTrie::get_ith(
   }
 
   pair<size_t, size_t> range = get_range(read);
-  if (ignore_empty && read.empty()
-      && range.first < data.size() && data[range.first].read.empty()) {
+  if (ignore_empty
+      && read.empty()
+      && range.first < data.size()
+      && data[range.first].read.empty()) {
     range.first++;
   }
   size_t begin = range.first;
   size_t end = range.second;
   unsigned offset = get_offset(begin);
   unsigned goal = offset + i;
-  // LOG() << "(" << begin << ", " << end << ")";
-  // LOG() << "off(" << get_offset(begin) << ", " << get_offset(end) << ")";
 
   if (!(goal < get_offset(end))) {
     return false;
@@ -62,6 +63,7 @@ ArrayTrie::get_ith(
 
 void
 ArrayTrie::insert(const read_t& read, id_t str, unsigned n) {
+  // Note that this code requires O(n) time
   size_t pos = get_begin(read);
   if (pos >= data.size() || data[pos].str != str) {
     Node node;
@@ -70,14 +72,15 @@ ArrayTrie::insert(const read_t& read, id_t str, unsigned n) {
     node.count = get_offset(pos);
     data.insert(data.begin() + pos, node);
   }
-  for (size_t i = pos; i < data.size(); i++)
+  for (size_t i = pos; i < data.size(); ++i) {
     data[i].count += n;
+  }
 }
 
 void
 ArrayTrie::print(std::ostream& out) const {
   unsigned last = 0;
-  for (size_t i = 0; i < data.size(); i++) {
+  for (size_t i = 0; i < data.size(); ++i) {
     out << data[i].str << ": " << (data[i].count - last) << std::endl;
     last = data[i].count;
   }
@@ -87,7 +90,7 @@ size_t
 ArrayTrie::count_total(const read_t& read, bool ignore_empty) const {
   size_t total = 0;
   read_t r;
-  // LOG(ERROR, "hist: " << read_to_str(read));
+
   FOREACH(c, read) {
     size_t pos = get_begin(r);
     if (pos < data.size() &&
@@ -99,9 +102,12 @@ ArrayTrie::count_total(const read_t& read, bool ignore_empty) const {
   }
 
   pair<size_t, size_t> range = get_range(read);
-  if (ignore_empty && read.empty()
-      && range.first < data.size() && data[range.first].read.empty()) {
-    range.first++;
+  if (ignore_empty
+      && read.empty()
+      && range.first < data.size()
+      && data[range.first].read.empty()) {
+    // The empty entry must be the first
+    ++range.first;
   }
   total += get_offset(range.second) - get_offset(range.first);
   return total;

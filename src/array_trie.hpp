@@ -14,8 +14,6 @@ namespace ppg {
 
 class ArrayTrie : public Trie {
  public:
-  virtual ~ArrayTrie() {}
-
   bool get_ith(
       const read_t& read,
       size_t i,
@@ -34,6 +32,7 @@ class ArrayTrie : public Trie {
       const read_t& read,
       bool ignore_empty = false) const;
 
+ private:
   struct Node {
     read_t read;
     id_t str;
@@ -46,7 +45,6 @@ class ArrayTrie : public Trie {
     }
   };
 
- private:
   friend class pfi::data::serialization::access;
   template <class Ar>
   void serialize(Ar& ar) {
