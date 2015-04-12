@@ -38,6 +38,7 @@ def build(bld):
 
     test_source = [
         'array_trie_test.cpp',
+        'dictionary_test.cpp',
         'hash_trie_test.cpp',
         'mecab_reader_test.cpp',
         'ngram_test.cpp',
