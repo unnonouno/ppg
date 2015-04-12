@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include <pficommon/data/string/utility.h>
+
 #include "sentence.hpp"
 
 using std::istream;
@@ -11,26 +13,7 @@ using std::string;
 using std::vector;
 
 namespace ppg {
-
-vector<string> split(const string& s, const string& delim) {
-  unsigned pos = 0;
-  vector<string> ret;
-  while (true) {
-    size_t next = s.find_first_of(delim, pos);
-    if (next == string::npos) {
-      ret.push_back(s.substr(pos));
-      break;
-    } else {
-      ret.push_back(s.substr(pos, next - pos));
-      pos = next + delim.size();
-    }
-  }
-  return ret;
-}
-
-MecabReader::MecabReader(istream& in, ReadManager& read_manager)
-    : input(in), read_manager(read_manager) {
-}
+namespace  {
 
 bool is_function_word(const string& pos) {
   return pos == "助詞" || pos == "助動詞";
@@ -38,6 +21,12 @@ bool is_function_word(const string& pos) {
 
 bool is_verb(const string& pos) {
   return pos == "動詞";
+}
+
+}  // namespace
+
+MecabReader::MecabReader(istream& in, ReadManager& read_manager)
+    : input(in), read_manager(read_manager) {
 }
 
 bool MecabReader::get_sentence(Sentence& sentence) {
@@ -50,8 +39,8 @@ bool MecabReader::get_sentence(Sentence& sentence) {
         sentence.words.push_back(Word(word, read));
       return true;
     }
-    vector<string> ss = split(line, "\t");
-    vector<string> features = split(ss[1], ",");
+    vector<string> ss = pfi::data::string::split(line, '\t');
+    vector<string> features = pfi::data::string::split(ss[1], ',');
     string pos = features[0] + ":" + features[1];
     read_t r = read_manager.string_to_read(features[features.size() - 2]);
     if (r.empty() || ss[0] == "…") {
