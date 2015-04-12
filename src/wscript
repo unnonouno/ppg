@@ -2,6 +2,7 @@ def build(bld):
     bld.stlib(
         source=[
             'array_trie.cpp',
+            'array_trie_builder.cpp',
             'dictionary.cpp',
             'hash_trie.cpp',
             'mecab_reader.cpp',
@@ -38,6 +39,7 @@ def build(bld):
 
     test_source = [
         'array_trie_test.cpp',
+        'array_trie_builder_test.cpp',
         'dictionary_test.cpp',
         'hash_trie_test.cpp',
         'mecab_reader_test.cpp',

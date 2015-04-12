@@ -45,6 +45,8 @@ class ArrayTrie : public Trie {
     }
   };
 
+  friend class ArrayTrieBuilder;
+
   friend class pfi::data::serialization::access;
   template <class Ar>
   void serialize(Ar& ar) {
